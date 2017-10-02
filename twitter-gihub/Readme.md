@@ -1,6 +1,6 @@
 ## Build and run instructions
 
-1. Obtain consumer key and secret key for twitter
+1. Obtain consumer key and secret key for twitter from here: https://apps.twitter.com
 2. Create file called twitter-creds.properties in same directory with pom file
 3. Add into the twitter-creds.properties:
     ```
