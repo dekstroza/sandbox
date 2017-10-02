@@ -16,7 +16,6 @@ import java.util.List;
 
 import static com.jayway.jsonpath.JsonPath.parse;
 import static io.reactivex.Observable.create;
-import static io.reactivex.Observable.zip;
 import static java.lang.String.format;
 
 public class GithubApi {
@@ -27,6 +26,7 @@ public class GithubApi {
     private static final String GITHUB_QUERY_PATH = "/search/repositories";
     public static final String USER_AGENT = "User-Agent";
     public static final String USER_AGENET_VALUE = "dekstroza";
+    public static final String DESC_QUERY = "$.items[?(@.full_name == '%s')].description";
     private static GithubApi instance = new GithubApi();
 
     private SSLEngine sslEngine;
@@ -58,25 +58,16 @@ public class GithubApi {
                    .build();
         DocumentContext ctx = parse(client.newCall(request).execute().body().byteStream());
 
-        Observable<String> observableName = create(emitter1 -> {
+        return create(emitter1 -> {
             try {
-                ctx.read("$.items[*].full_name", List.class).parallelStream().forEach(x -> emitter1.onNext((String) x));
+                ctx.read("$.items[*].full_name", List.class).forEach(x -> {
+                    List<String> description = ctx.read(format(DESC_QUERY, (String)x), List.class);
+                    emitter1.onNext(new GitHubProject((String) x, description != null ? description.get(0) : ""));
+                });
                 emitter1.onComplete();
             } catch (Exception e) {
                 emitter1.onError(e);
             }
-        });
-        Observable<String> observableDescription = create(emitter2 -> {
-            try {
-                ctx.read("$.items[*].description", List.class).parallelStream().forEach(x -> emitter2.onNext(x == null ? "" : (String) x));
-                emitter2.onComplete();
-            } catch (Exception e) {
-                emitter2.onError(e);
-            }
-        });
-
-        return zip(observableName, observableDescription, (s, s2) -> {
-            return new GitHubProject(s, s2);
         });
 
     }
