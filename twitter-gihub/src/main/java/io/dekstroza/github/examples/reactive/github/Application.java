@@ -24,5 +24,4 @@ public class Application {
             return new Summary(gitHubProject, tweets.blockingGet());
         }).forEach(summary -> log.info("{}", summary));
     }
-
 }
