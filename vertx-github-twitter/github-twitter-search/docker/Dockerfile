@@ -1,6 +1,4 @@
-FROM alpine:3.6 as packager
-ADD jdk-9-ea+181_linux-x64-musl_bin.tar /opt/
-
+FROM dekstroza/openjdk9-alpine as packager
 
 RUN /opt/jdk-9/bin/jlink \
 	--module-path /opt/jdk-9/jmods \
@@ -12,10 +10,10 @@ RUN /opt/jdk-9/bin/jlink \
 
 FROM alpine:3.6
 COPY --from=packager /opt/jdk-9-minimal /opt/jdk-9-minimal
-COPY github-twitter-service-1.0.1-SNAPSHOT-fat.jar /opt/
+COPY github-twitter-search-1.0.1-SNAPSHOT-fat.jar /opt/
 
 ENV JAVA_HOME=/opt/jdk-9-minimal
 ENV PATH="$PATH:$JAVA_HOME/bin"
 
 EXPOSE 8080
-CMD java -jar /opt/github-twitter-service-1.0.1-SNAPSHOT-fat.jar
+CMD java -jar /opt/github-twitter-search-1.0.1-SNAPSHOT-fat.jar

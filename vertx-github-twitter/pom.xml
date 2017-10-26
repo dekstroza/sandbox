@@ -8,7 +8,7 @@
     <artifactId>vertx-github-twitter</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <modules>
-        <module>github-twitter-service</module>
+        <module>github-twitter-search</module>
     </modules>
 
     <packaging>pom</packaging>
