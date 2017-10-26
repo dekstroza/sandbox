@@ -29,8 +29,6 @@ public class GithubApi {
     public static final String DESC_QUERY = "$.items[?(@.full_name == '%s')].description";
     private static GithubApi instance = new GithubApi();
 
-    private SSLEngine sslEngine;
-
     private static SSLEngine defaultSSLEngineForClient() throws NoSuchAlgorithmException {
         SSLContext sslCtx = SSLContext.getDefault();
         SSLEngine sslEngine = sslCtx.createSSLEngine(GITHUB_SERVER, DEFAULT_HTTPS_PORT);
@@ -39,12 +37,6 @@ public class GithubApi {
     }
 
     private GithubApi() {
-        try {
-            sslEngine = defaultSSLEngineForClient();
-        } catch (NoSuchAlgorithmException nsae) {
-            logger.error("Failed to create SSLEngine.", nsae);
-            System.exit(-1);
-        }
     }
 
     public static GithubApi createGithubApi() {
@@ -61,7 +53,7 @@ public class GithubApi {
         return create(emitter1 -> {
             try {
                 ctx.read("$.items[*].full_name", List.class).forEach(x -> {
-                    List<String> description = ctx.read(format(DESC_QUERY, (String)x), List.class);
+                    List<String> description = ctx.read(format(DESC_QUERY, (String) x), List.class);
                     emitter1.onNext(new GitHubProject((String) x, description != null ? description.get(0) : ""));
                 });
                 emitter1.onComplete();

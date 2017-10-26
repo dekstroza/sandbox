@@ -15,30 +15,23 @@ public class Application {
 
     public static void main(String[] args) throws Exception {
 
-        //deki();
-        mare();
-        Thread.sleep(15000);
+        createSummary();
+        Thread.sleep(10000);
     }
 
     public static void deki() throws IOException {
-        createGithubApi().queryGithubProjects("reactive").subscribe(gitHubProject -> {
+        createGithubApi().queryGithubProjects("reactive").take(10).subscribe(gitHubProject -> {
             log.info("{}", new Summary(gitHubProject, createTwitterReactiveApi().searchTweets(gitHubProject).toList().blockingGet()));
         });
     }
 
-    public static void mare() throws IOException {
+    public static void createSummary() throws Exception {
         createGithubApi().queryGithubProjects("reactive").take(10).observeOn(Schedulers.io()).flatMap(
-                   project -> createTwitterReactiveApi().searchTweets(project).take(10).map(Tweet::getText)
-                              .map(tweet -> new Tuple<>(project.getProjectName(), tweet))).groupBy(t -> t.first).subscribe(result -> {
-            result.map(s -> s.second).toList().subscribe(s -> System.out.println(result.getKey() + " -> " + s));
-        });
-    }
-
-    public static void mare2() throws IOException {
-        createGithubApi().queryGithubProjects("reactive").take(10).observeOn(Schedulers.io()).flatMap(
-                   project -> createTwitterReactiveApi().searchTweets(project).take(10).map(Tweet::getText)
-                              .map(tweet -> new Tuple<>(project.getProjectName(), tweet))).groupBy(t -> t.first).subscribe(result -> {
-            result.map(s -> s.second).toList().subscribe(s -> System.out.println(result.getKey() + " -> " + s));
+                   project -> createTwitterReactiveApi().searchTweets(project)
+                              .map(tweet -> new Tuple<>(project, tweet)))
+                   .groupBy(t -> t.first)
+                   .subscribe(result -> {
+            result.map(s -> s.second).toList().subscribe(s -> log.info("{}",new Summary(result.getKey(),s)));
         });
     }
 
