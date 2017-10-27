@@ -10,10 +10,7 @@ import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
 import rx.schedulers.Schedulers;
-
-import java.util.List;
 
 public class GithubTwitterSearchService extends AbstractVerticle {
 
@@ -29,16 +26,23 @@ public class GithubTwitterSearchService extends AbstractVerticle {
             response.setChunked(true);
             response.putHeader("Content-Type", "application/json");
 
-            GithubApi.createGithubApi(vertx).searchGitHubProjects(request.getParam("keyword")).observeOn(Schedulers.io()).take(10).flatMap(gitHubProject -> {
-                final Observable<List<Tweet>> tweetObservable = TwitterApi.createTwitterReactiveApi(vertx).searchTweets(gitHubProject).take(10).toList();
-                return tweetObservable.map(tweets -> new Summary(gitHubProject, tweets));
-            }).toList().subscribe(summaries -> {
-                response.end(Json.encodePrettily(summaries));
-            });
+            GithubApi.createGithubApi(vertx).searchGitHubProjects(request.getParam("keyword"))
+                       .observeOn(Schedulers.io())
+                       .take(10)
+                       .flatMap(gitHubProject -> {
+                           return TwitterApi.createTwitterReactiveApi(vertx).searchTweets(gitHubProject)
+                                      .take(10)
+                                      .toList()
+                                      .map(tweets -> new Summary(gitHubProject, tweets));
+                       })
+                       .toList()
+                       .subscribe(summaries -> {
+                           response.end(Json.encodePrettily(summaries));
+                       });
         });
-        server.requestStream().
-                   toObservable().
-                   subscribe(httpServerRequest -> router.accept(httpServerRequest));
+        server.requestStream()
+                   .toObservable()
+                   .subscribe(httpServerRequest -> router.accept(httpServerRequest));
 
         server.listen(8080, "0.0.0.0", httpServerAsyncResult -> {
             if (httpServerAsyncResult.succeeded()) {
