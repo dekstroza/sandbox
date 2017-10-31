@@ -12,14 +12,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import rx.schedulers.Schedulers;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(VertxUnitRunner.class)
 public class GithubTwitterSearchTest {
 
-    private static final Logger log = LoggerFactory.getLogger(GithubTwitterSearchTest.class);
     private Vertx vertx;
 
     @Before
@@ -37,34 +37,30 @@ public class GithubTwitterSearchTest {
     public void testSearchTweets(TestContext context) throws Exception {
         final Async async = context.async();
         GitHubProject project = new GitHubProject("component/reactive", "Tiny reactive template engine");
-        TwitterApi.createTwitterReactiveApi(vertx).searchTweets(project).subscribeOn(Schedulers.io()).doAfterTerminate(() -> {
-            async.complete();
-        }).subscribe(tweet -> {
-            Assert.assertNotNull(tweet);
-            log.info("{}", Json.encodePrettily(tweet));
-        });
+        TwitterApi.createTwitterReactiveApi(vertx).searchTweets(project)
+                   .subscribeOn(Schedulers.io())
+                   .doAfterTerminate(async::complete)
+                   .subscribe(Assert::assertNotNull);
     }
 
     @Test
     public void testSearchGithubProjects(TestContext context) {
         final Async async = context.async();
-        GithubApi.createGithubApi(vertx).searchGitHubProjects("reactive").subscribeOn(Schedulers.io()).doAfterTerminate(() -> {
-            async.complete();
-        }).subscribe(gitHubProject -> {
-            Assert.assertNotNull(gitHubProject);
-            log.info(Json.encodePrettily(gitHubProject));
-        });
+        GithubApi.createGithubApi(vertx).searchGitHubProjects("reactive")
+                   .subscribeOn(Schedulers.io())
+                   .doAfterTerminate(async::complete)
+                   .subscribe(Assert::assertNotNull);
     }
 
     @Test
     public void testGithubTwitterSearch(TestContext context) {
         final Async async = context.async();
         WebClient webClient = WebClient.create(vertx, new WebClientOptions().setDefaultHost("localhost").setSsl(false).setDefaultPort(8080));
-        webClient.get(8080, "localhost", "/search/akka")
+        webClient.get(GithubTwitterSearchService.DEFAULT_SERVER_PORT, GithubTwitterSearchService.DEFAULT_LISTEN_ADDRESS, "/search/akka")
                    .rxSend()
                    .subscribe(bufferHttpResponse -> {
-                       Assert.assertEquals(200,bufferHttpResponse.statusCode());
-                       Assert.assertNotNull(bufferHttpResponse.bodyAsString());
+                       assertEquals(200,bufferHttpResponse.statusCode());
+                       assertNotNull(bufferHttpResponse.bodyAsString());
                        async.complete();
                    });
     }
