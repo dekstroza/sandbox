@@ -3,7 +3,13 @@
 
 ### Code Build instructions:
 
-1. Before building application, create inside github-twitter-service module, next to pom.xml file called twitter-creds.properties and populate it with your credentials for twitter api. You will need consumer key and consumer secret, more info on obtaining these here:
+1. Before building application, create inside github-twitter-service module, next to pom.xml file called twitter-creds.properties and populate it with your credentials for twitter api.
+File should look like this:
+```
+consumer.key=YOURKEYHERE
+consumer.secret=YOURSECRETHERE
+```
+You will need consumer key and consumer secret, more info on obtaining these here: https://apps.twitter.com
 2. Once twitter-creds.properties is created, you can run mvn clean install
 3. Run the build:
 ```
