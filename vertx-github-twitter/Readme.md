@@ -10,7 +10,9 @@ consumer.key=YOURKEYHERE
 consumer.secret=YOURSECRETHERE
 ```
 You will need consumer key and consumer secret, more info on obtaining these here: https://apps.twitter.com
+
 2. Once twitter-creds.properties is created, you can run mvn clean install
+
 3. Run the build:
 ```
 mvn clean install
