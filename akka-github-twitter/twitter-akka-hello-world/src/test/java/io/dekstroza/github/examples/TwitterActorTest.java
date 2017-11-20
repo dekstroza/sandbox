@@ -2,16 +2,18 @@ package io.dekstroza.github.examples;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.http.javadsl.model.HttpResponse;
+import akka.stream.ActorMaterializer;
+import akka.stream.Materializer;
 import akka.testkit.javadsl.TestKit;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+public class TwitterActorTest {
 
-public class MyFirstActorTest {
     static ActorSystem actorSystem;
-    static final String HELLO_WORLD = "Hello World";
 
     @BeforeClass
     public static void setup() {
@@ -27,10 +29,10 @@ public class MyFirstActorTest {
     @Test
     public void testMyFirstActor_Greeting() {
         final TestKit probe = new TestKit(actorSystem);
-        final ActorRef myFirstActor = actorSystem.actorOf(MyFirstActor.props());
-        myFirstActor.tell(new Greeting(HELLO_WORLD), probe.getRef());
-        final Greeting greeting = probe.expectMsgClass(Greeting.class);
-        assertEquals(HELLO_WORLD, greeting.getMessage());
+        final ActorRef twitterActor = actorSystem.actorOf(TwitterActor.props());
+        twitterActor.tell("https://api.twitter.com/oauth2/token", probe.getRef());
+        TokenResponse response = probe.expectMsgClass(TokenResponse.class);
+        Assert.assertFalse(response.getAccessToken().isEmpty());
+        System.out.println(response.getAccessToken());
     }
-
 }
