@@ -54,7 +54,7 @@
                                     <resource>reference.conf</resource>
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>io.dekstroza.github.examples.TwitterAkkaApplication</mainClass>
+                                    <mainClass>io.dekstroza.github.examples.app.TwitterAkkaApplication</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -86,6 +86,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${json.path.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-http-testkit_2.12</artifactId>
             <scope>test</scope>
@@ -94,6 +99,10 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
         </dependency>
     </dependencies>
 

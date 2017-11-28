@@ -1,4 +1,4 @@
-package io.dekstroza.github.examples.io.dekstroza.github.examples.config;
+package io.dekstroza.github.examples.config;
 
 import akka.actor.Extension;
 import com.typesafe.config.Config;

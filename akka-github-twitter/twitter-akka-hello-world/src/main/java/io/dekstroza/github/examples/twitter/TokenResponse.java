@@ -1,4 +1,4 @@
-package io.dekstroza.github.examples;
+package io.dekstroza.github.examples.twitter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

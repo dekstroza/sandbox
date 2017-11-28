@@ -17,6 +17,8 @@
         <akka.version>2.5.4</akka.version>
         <akka.http.version>10.0.10</akka.http.version>
         <junit.version>4.12</junit.version>
+        <json.path.version>2.3.0</json.path.version>
+        <slf4j.version>1.7.25</slf4j.version>
     </properties>
 
     <dependencyManagement>
@@ -45,6 +47,11 @@
                 <groupId>com.typesafe.akka</groupId>
                 <artifactId>akka-http-jackson_2.12</artifactId>
                 <version>${akka.http.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.typesafe.akka</groupId>

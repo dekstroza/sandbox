@@ -1,4 +1,4 @@
-package io.dekstroza.github.examples.io.dekstroza.github.examples.config;
+package io.dekstroza.github.examples.config;
 
 import akka.actor.AbstractExtensionId;
 import akka.actor.ExtendedActorSystem;
@@ -10,10 +10,6 @@ public class Settings extends AbstractExtensionId<SettingsImpl> {
     @Override
     public SettingsImpl createExtension(ExtendedActorSystem system) {
         return new SettingsImpl(system.settings().config());
-    }
-
-    private Settings() {
-
     }
 
     public Settings lookup() {
