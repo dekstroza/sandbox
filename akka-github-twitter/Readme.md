@@ -22,6 +22,8 @@ Before building twitter-akka-hello-world, create file twitter.creds next to it's
 consumer.key=KEY_HERE
 consumer.secret=SECRET_HERE
 ```
+Consumer key and secret can be obtained from twitter, for more info go to: https://apps.twitter.com
+
 Once this is done, from main pom file directory, run:
 
 ```
