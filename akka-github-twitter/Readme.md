@@ -41,5 +41,8 @@ or to run search github-twitter example:
 ```
 java -jar twitter-akka-hello-world/target/twitter-akka-hello-world-1.0.1-SNAPSHOT-allinone.jar
 ```
-Once above is running (for search example), you can access it on http://localhost:8080/search[CS]/SEARCH_TERM and hit any key to stop the web server.
-CS suffix will use search implemented with Java CompletionStage.
+Once above is running (for search example), you can access it on:
+```
+http://localhost:8080/search[CS]/SEARCH_TERM 
+```
+and hit any key to stop the web server. CS suffix will use search implemented with Java CompletionStage.
