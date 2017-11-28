@@ -38,7 +38,7 @@ public class SearchActor extends AbstractActor {
 
     protected Future<Iterable<SearchSummary>> performSearch(String searchTerm) {
         final Future<List<GitHubProject>> searchGithubFuture = searchGithub(searchTerm);
-        return searchGithubFuture.map(projectList -> projectList.stream().parallel().map(project -> {
+        return searchGithubFuture.map(projectList -> projectList.stream().map(project -> {
             final Future<List<Tweet>> tweetsFuture = searchTwitter(project);
             return tweetsFuture.map(tweets -> new SearchSummary(project, tweets), dispatcher);
         }).collect(toList()), dispatcher).flatMap(v1 -> sequence(v1, dispatcher), dispatcher);
@@ -46,7 +46,7 @@ public class SearchActor extends AbstractActor {
 
     protected CompletionStage<Iterable<SearchSummary>> performSearchCF(String searchTerm) {
         final CompletionStage<List<GitHubProject>> searchGithubFuture = searchGithubCF(searchTerm);
-        return searchGithubFuture.thenApply(projectList -> projectList.stream().parallel().map(project -> {
+        return searchGithubFuture.thenApply(projectList -> projectList.stream().map(project -> {
             final CompletableFuture<List<Tweet>> tweetsFuture = searchTwitterCF(project).toCompletableFuture();
             return tweetsFuture.thenApply(tweets -> new SearchSummary(project, tweets));
         }).collect(toList())).thenCompose(this::allAsList);

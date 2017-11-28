@@ -88,7 +88,7 @@ public class TwitterActor extends AbstractActor {
 
     private List<Tweet> parseTweets(String json) {
         final DocumentContext ctx = JsonPath.using(jsonPathConfig).parse(json);
-        return ((List<String>) ctx.read(TWEETS_QUERY)).stream().limit(10).parallel().map(Tweet::new).collect(toList());
+        return ((List<String>) ctx.read(TWEETS_QUERY)).stream().limit(10).map(Tweet::new).collect(toList());
     }
 
     private String base64Encode(final String consumerKey, final String consumerSecret) {

@@ -43,7 +43,7 @@ public class GithubActor extends AbstractActor {
         return FutureConverters.toScala(http.singleRequest(GET(format(GITHUB_SERVER, searchRequest)), materializer)
                    .thenCompose(response -> entityToString().unmarshal(response.entity(), materializer)).thenApply(json -> {
                        final DocumentContext ctx = using(jsonPathConfig).parse(json);
-                       return readProjectNames(ctx).stream().limit(10).parallel().map(projectName -> toGitHubProject(ctx, projectName)).collect(
+                       return readProjectNames(ctx).stream().limit(10).map(projectName -> toGitHubProject(ctx, projectName)).collect(
                                   Collectors.toList());
                    }));
     }
@@ -52,7 +52,7 @@ public class GithubActor extends AbstractActor {
         return http.singleRequest(GET(format(GITHUB_SERVER, searchRequest)), materializer).thenCompose(
                    response -> entityToString().unmarshal(response.entity(), materializer)).thenApply(json -> {
             final DocumentContext ctx = using(jsonPathConfig).parse(json);
-            return readProjectNames(ctx).stream().limit(10).parallel().map(projectName -> toGitHubProject(ctx, projectName)).collect(
+            return readProjectNames(ctx).stream().limit(10).map(projectName -> toGitHubProject(ctx, projectName)).collect(
                        Collectors.toList());
         });
     }
