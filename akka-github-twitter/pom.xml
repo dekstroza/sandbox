@@ -10,6 +10,7 @@
     <modules>
         <module>akka-hello-world</module>
         <module>twitter-akka-hello-world</module>
+        <module>github-twitter-akka-tell</module>
     </modules>
     <packaging>pom</packaging>
 
