@@ -4,10 +4,11 @@ First attempt to implement this in akka. Contains two maven modules:
 
 1. akka-hello-world
 2. twitter-akka-hello-world
+3. github-titter-akka-tell
 
 First module is simplest possible Hello World single actor system, it receives string message and outputs it to stdout.
 Second module is implementation of project search on github, crossreferenced with twitter search for tweets mentioning it. 
-It has implementation with both scala Future and Java's CompletionStage for reference.
+It has implementation with both scala Future and Java's CompletionStage for reference. Third example is implementation based on tell (almost completely) with dedicated actor used to fetch and store credentials for twitter, avoiding repeated credential requesting via twitter api.
 
 ## Requirements
 
