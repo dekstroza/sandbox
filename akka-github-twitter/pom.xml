@@ -9,8 +9,9 @@
     <version>1.0.1-SNAPSHOT</version>
     <modules>
         <module>akka-hello-world</module>
-        <module>twitter-akka-hello-world</module>
+        <module>github-twitter-akka-ask</module>
         <module>github-twitter-akka-tell</module>
+        <module>github-twitter-akka-common</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -50,6 +51,11 @@
                 <version>${akka.http.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${json.path.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j.version}</version>
@@ -84,6 +90,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
                     <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.0.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>

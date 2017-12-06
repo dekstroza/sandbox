@@ -15,20 +15,18 @@ import akka.stream.Materializer;
 import akka.util.Timeout;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import io.dekstroza.github.examples.common.GitHubProject;
-import io.dekstroza.github.examples.common.TokenResponse;
-import io.dekstroza.github.examples.common.Tweet;
-import io.dekstroza.github.examples.common.TwitterSearchResponse;
+import io.dekstroza.github.examples.common.*;
+import io.dekstroza.github.examples.common.actors.TwitterTokenActor;
 import scala.concurrent.ExecutionContextExecutor;
 import scala.concurrent.duration.FiniteDuration;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
-import java.util.concurrent.TimeUnit;
 
 import static akka.http.javadsl.model.HttpRequest.GET;
-import static io.dekstroza.github.examples.twitter.Constants.*;
+import static io.dekstroza.github.examples.common.Constants.TWEETS_QUERY;
+import static io.dekstroza.github.examples.common.Constants.jsonPathConfig;
 import static java.lang.String.format;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.stream.Collectors.toList;
@@ -75,9 +73,8 @@ public class TwitterSearchActor extends AbstractActor {
     }
 
     private void searchTweets() {
-        getContext().getSystem().actorSelection("/user/twitterTokenActor").resolveOneCS(FiniteDuration.apply(5, TimeUnit.SECONDS)).thenApply(
-                   actorRef -> PatternsCS.ask(actorRef, new TokenRequestMessage(), Timeout.apply(5, TimeUnit.SECONDS))
-                              .thenApply(TokenResponse.class::cast)
+        getContext().getSystem().actorSelection(Constants.TWITTER_TOKEN_ACTOR_PATH).resolveOneCS(FiniteDuration.apply(5, SECONDS)).thenApply(
+                   actorRef -> PatternsCS.ask(actorRef, new TokenRequestMessage(), Timeout.apply(5, SECONDS)).thenApply(TokenResponse.class::cast)
                               .thenApply(tokenResponse -> searchTwitter(githubProject.getName(), tokenResponse.getAccessToken())
                                          .thenAccept(this::sendResponse)));
     }
@@ -89,7 +86,7 @@ public class TwitterSearchActor extends AbstractActor {
     }
 
     private CompletionStage<List<Tweet>> searchTwitter(String keyword, String twitterToken) {
-        String searchUrl = format(SEARCH_URL, keyword);
+        String searchUrl = format(Constants.SEARCH_URL, keyword);
         RawHeader rawHeader = RawHeader.create("Authorization", format("Bearer %s", twitterToken));
         return http.singleRequest(GET(searchUrl).addHeader(rawHeader), materializer).thenCompose(this::unmarshalToString).thenApply(
                    this::parseTweets);

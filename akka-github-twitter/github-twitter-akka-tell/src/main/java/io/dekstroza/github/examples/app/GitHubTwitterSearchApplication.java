@@ -17,7 +17,7 @@ import akka.http.javadsl.server.Route;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import io.dekstroza.github.examples.common.SearchSummary;
-import io.dekstroza.github.examples.twitter.TwitterTokenActor;
+import io.dekstroza.github.examples.common.actors.TwitterTokenActor;
 
 import java.util.List;
 import java.util.concurrent.CompletionStage;
@@ -38,7 +38,7 @@ public class GitHubTwitterSearchApplication {
     private GitHubTwitterSearchApplication(ActorSystem system) {
         this.system = system;
         searchActor = system.actorOf(Props.create(SearchActor.class), "requestProcessor");
-        twitterTokenActor = system.actorOf(TwitterTokenActor.props(), "twitterTokenActor");
+        twitterTokenActor = system.actorOf(TwitterTokenActor.props(), TwitterTokenActor.NAME);
 
     }
 

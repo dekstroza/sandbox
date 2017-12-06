@@ -17,6 +17,10 @@
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-http-jackson_2.12</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

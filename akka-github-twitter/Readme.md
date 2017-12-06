@@ -3,11 +3,14 @@
 First attempt to implement this in akka. Contains two maven modules:
 
 1. akka-hello-world
-2. twitter-akka-hello-world
-3. github-titter-akka-tell
+2. github-twitter-akka-ask
+3. github-twitter-akka-tell
+4. github-twitter-akka-common
 
 First module is simplest possible Hello World single actor system, it receives string message and outputs it to stdout.
-Second module is implementation of project search on github, crossreferenced with twitter search for tweets mentioning it. 
+Second and third modules are implementations of project search on github, crossreferenced with twitter search for tweets mentioning it.
+Third module contains some common bits and bobs used by other. 
+
 It has implementation with both scala Future and Java's CompletionStage for reference. Third example is implementation based on tell (almost completely) with dedicated actor used to fetch and store credentials for twitter, avoiding repeated credential requesting via twitter api.
 
 ## Requirements
@@ -18,7 +21,7 @@ To build and run it needs:
 
 ## Building
 
-Before building twitter-akka-hello-world, create file twitter.creds next to it's pom.xml. File should contain your twitter consumer key and secret, like shown here:
+Before building, create file twitter.creds in the same directory as main project pom.xml file. File should contain your twitter consumer key and secret, like shown here:
 ```
 consumer.key=KEY_HERE
 consumer.secret=SECRET_HERE
@@ -39,10 +42,14 @@ Once compiled, it can be run from IDE as standalone java application or via comm
 java -jar akka-hello-world/target/akka-hello-world-1.0.1-SNAPSHOT.jar
 ```
 
-or to run search github-twitter example:
+or to run search examples, github-twitter-akka-ask example:
 
 ```
-java -jar twitter-akka-hello-world/target/twitter-akka-hello-world-1.0.1-SNAPSHOT-allinone.jar
+java -jar github-twitter-akka-ask/target/github-twitter-akka-ask-1.0.1-SNAPSHOT-allinone.jar
+```
+or github-twitter-akka-tell example:
+```
+java -jar github-twitter-akka-tell/target/github-twitter-akka-tell-1.0.1-SNAPSHOT-allinone.jar
 ```
 Once above is running (for search example), you can access it on:
 ```

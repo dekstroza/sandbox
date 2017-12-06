@@ -19,6 +19,7 @@ import akka.routing.RoundRobinPool;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.util.Timeout;
+import io.dekstroza.github.examples.common.actors.TwitterTokenActor;
 import scala.concurrent.Future;
 import scala.concurrent.duration.FiniteDuration;
 import scala.reflect.ClassTag;
@@ -34,12 +35,13 @@ public class TwitterAkkaApplication extends AllDirectives {
 
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 8080;
-
-    private ActorRef searchActor;
+    private final ActorRef twitterTokenActor;
+    private final ActorRef searchActor;
 
     private TwitterAkkaApplication(final ActorSystem system) {
 
         searchActor = system.actorOf(create(SearchActor.class).withRouter(new RoundRobinPool(10)), "search-actors");
+        twitterTokenActor = system.actorOf(TwitterTokenActor.props(), TwitterTokenActor.NAME);
     }
 
     public static void main(String[] args) throws Exception {
