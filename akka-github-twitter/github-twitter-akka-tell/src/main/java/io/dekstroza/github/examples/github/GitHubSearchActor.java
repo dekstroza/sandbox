@@ -14,8 +14,6 @@ import io.dekstroza.github.examples.app.Request;
 import io.dekstroza.github.examples.common.GitHubProject;
 import io.dekstroza.github.examples.common.SearchSummary;
 import io.dekstroza.github.examples.common.TwitterSearchResponse;
-import io.dekstroza.github.examples.twitter.SearchTimeout;
-import io.dekstroza.github.examples.twitter.TimeoutMessage;
 import io.dekstroza.github.examples.twitter.TwitterSearchActor;
 import scala.concurrent.ExecutionContextExecutor;
 import scala.concurrent.duration.FiniteDuration;
@@ -47,6 +45,14 @@ public class GitHubSearchActor extends AbstractActor {
     private final Materializer materializer = ActorMaterializer.create(context());
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
     private Cancellable timeout;
+
+    public static class TimeoutMessage {
+
+    }
+
+    public static class SearchTimeout {
+        
+    }
 
     private GitHubSearchActor(Request request) {
         this.request = request;

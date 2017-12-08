@@ -16,7 +16,6 @@ import akka.util.Timeout;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.dekstroza.github.examples.common.*;
-import io.dekstroza.github.examples.common.actors.TwitterTokenActor;
 import scala.concurrent.ExecutionContextExecutor;
 import scala.concurrent.duration.FiniteDuration;
 
@@ -41,6 +40,10 @@ public class TwitterSearchActor extends AbstractActor {
     private final ExecutionContextExecutor dispatcher = context().dispatcher();
     private final Materializer materializer = ActorMaterializer.create(context());
     private final Http http = Http.get(getContext().getSystem());
+
+    public static final class TimeoutMessage {
+        
+    }
 
     private TwitterSearchActor(GitHubProject searchTerm) {
         this.githubProject = searchTerm;
