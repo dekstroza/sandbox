@@ -25,7 +25,7 @@ public class MyTest {
     private static final String SENT_MESSAGE = "Hello Testing World";
     private static final String SERVER_URL = "ws://localhost:8080/ws";
     private CountDownLatch latch = new CountDownLatch(1);
-    private static String result = "";
+    private String result;
 
     @Test
     public void test() {
