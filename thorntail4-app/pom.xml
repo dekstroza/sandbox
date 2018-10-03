@@ -65,7 +65,7 @@
             <plugin>
                 <groupId>io.thorntail</groupId>
                 <artifactId>thorntail-maven-plugin</artifactId>
-                <version>4.0.0-SNAPSHOT</version>
+                <version>${thorntail.version}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
