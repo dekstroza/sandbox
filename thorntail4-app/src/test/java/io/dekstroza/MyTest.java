@@ -13,6 +13,7 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 import java.net.URI;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.containsString;
@@ -24,6 +25,7 @@ public class MyTest {
     private static final String SENT_MESSAGE = "Hello Testing World";
     private static final String SERVER_URL = "ws://localhost:8080/ws";
     private CountDownLatch latch = new CountDownLatch(1);
+    private static String result = "";
 
     @Test
     public void test() {
@@ -39,13 +41,14 @@ public class MyTest {
             @Override
             public void onMessage(String msg) {
                 log.info("Got message: {}", msg);
-                Assert.assertEquals(SENT_MESSAGE, msg);
+                result = msg;
                 latch.countDown();
             }
         });
         session.getAsyncRemote().sendText(SENT_MESSAGE);
-        latch.await();
-        if(session!= null && session.isOpen()) {
+        Assert.assertTrue(latch.await(1000, TimeUnit.MILLISECONDS));
+        Assert.assertEquals(SENT_MESSAGE, result);
+        if (session != null && session.isOpen()) {
             session.close();
         }
     }
