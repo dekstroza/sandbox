@@ -1,0 +1,4 @@
+apiVersion: apps/v1
+name: ${artifactId}
+version: 1.0.0
+
