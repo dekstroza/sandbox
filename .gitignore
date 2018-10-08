@@ -6,4 +6,8 @@ target/
 .idea/
 twitter-creds.properties
 dependency-reduced-pom.xml
-
+akka-twitter-stream/
+dashboard/
+google-speach-recognition/
+java-snippets/
+vertx-mqtt/
