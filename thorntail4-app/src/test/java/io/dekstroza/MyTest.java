@@ -36,13 +36,16 @@ public class MyTest {
     public void testWebSocket() throws Exception {
         WebSocketContainer webSocketContainer = ContainerProvider.getWebSocketContainer();
         Session session = webSocketContainer.connectToServer(TestClientEndpoint.class, new URI(SERVER_URL));
-        session.addMessageHandler((MessageHandler.Whole<String>) msg -> {
-            log.info("Got message: {}", msg);
-            result = msg;
-            latch.countDown();
+        session.addMessageHandler(new MessageHandler.Whole<String>() {
+            @Override
+            public void onMessage(String msg) {
+                log.info("Got message: {}", msg);
+                result = msg;
+                latch.countDown();
+            }
         });
         session.getAsyncRemote().sendText(SENT_MESSAGE);
-        Assert.assertTrue(latch.await(1000, TimeUnit.MILLISECONDS));
+        Assert.assertTrue(latch.await(5000, TimeUnit.MILLISECONDS));
         Assert.assertEquals(SENT_MESSAGE, result);
         if (session.isOpen()) {
             session.close();
