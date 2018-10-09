@@ -48,5 +48,5 @@ or permanently set dockerfile.skip property to false in pom.xml of the generated
 
 Code can be run from IDE by just running the class with the main method. By default it will be available on localhost:8080
 Docker container will be automatically set up to run, as well as k8s deployment descriptors (including metrics and health).
-For more informations about Thorntail 4, see: https://docs.thorntail.io/4.0.0-SNAPSHOT/
+For more informations about Thorntail 4, see: [Thorntail 4 Documentation](https://docs.thorntail.io/4.0.0-SNAPSHOT/)
 
