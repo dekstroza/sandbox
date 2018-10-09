@@ -18,6 +18,7 @@
         <dockerfile-maven-version>1.4.4</dockerfile-maven-version>
         <thorntail.version>4.0.0-SNAPSHOT</thorntail.version>
         <logback.version>1.2.3</logback.version>
+        <dockerfile.skip>true</dockerfile.skip>
     </properties>
 
     <dependencyManagement>
@@ -40,6 +41,35 @@
         </dependency>
         <dependency>
             <groupId>io.thorntail</groupId>
+            <artifactId>thorntail-ogm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.thorntail</groupId>
+            <artifactId>thorntail-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.ogm</groupId>
+            <artifactId>hibernate-ogm-couchdb</artifactId>
+            <version>5.1.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>3.5.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <version>3.5.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-orm</artifactId>
+            <version>5.9.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>io.thorntail</groupId>
             <artifactId>thorntail-jaxrs</artifactId>
         </dependency>
         <dependency>
@@ -49,10 +79,6 @@
         <dependency>
             <groupId>io.thorntail</groupId>
             <artifactId>thorntail-health</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.thorntail</groupId>
-            <artifactId>thorntail-websockets</artifactId>
         </dependency>
         <dependency>
             <groupId>io.thorntail</groupId>
