@@ -1,3 +1,4 @@
 image: ${dockerRepo}/${artifactId}
 tag: ${version}
-pullPolicy: Always
+pullPolicy: IfNotPresent
+
