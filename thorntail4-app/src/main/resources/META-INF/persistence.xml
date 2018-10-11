@@ -9,7 +9,7 @@
         <properties>
             <property name="hibernate.ogm.datastore.provider" value="org.hibernate.ogm.datastore.couchdb.impl.CouchDBDatastoreProvider"/>
             <property name="hibernate.ogm.datastore.create_database" value="true"/>
-            <property name="hibernate.ogm.datastore.database" value="mytestdb"/>
+            <property name="hibernate.ogm.datastore.database" value="gamedb"/>
             <property name="hibernate.ogm.datastore.host" value="localhost"/>
             <property name="hibernate.ogm.datastore.port" value="5984"/>
             <property name="hibernate.ogm.datastore.username" value="foo"/>
