@@ -10,7 +10,7 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class CassandraInjection {
+public class EmbeddedCassandra {
 
     @Inject
     Logger logger;

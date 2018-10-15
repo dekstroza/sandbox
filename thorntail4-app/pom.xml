@@ -11,13 +11,17 @@
     <name>Thorntail4 App</name>
 
     <properties>
+        <!-- Set to 11 once cassandra-unit works with java 11 -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <!--                                                  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <docker.repository>dekstroza/thorntail4-app</docker.repository>
         <dockerfile-maven-version>1.4.4</dockerfile-maven-version>
         <thorntail.version>4.0.0-SNAPSHOT</thorntail.version>
+        <hibernate.ogm.version>5.2.0.Alpha1</hibernate.ogm.version>
         <logback.version>1.2.3</logback.version>
+        <dockerfile.skip>true</dockerfile.skip>
     </properties>
 
     <dependencyManagement>
@@ -38,9 +42,23 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
+        <!-- If running with jdk 11, this is needed -->
+        <!--<dependency>-->
+        <!--<groupId>javax.xml.bind</groupId>-->
+        <!--<artifactId>jaxb-api</artifactId>-->
+        <!--<version>2.3.0</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>io.thorntail</groupId>
             <artifactId>thorntail-jaxrs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.thorntail</groupId>
+            <artifactId>thorntail-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.thorntail</groupId>
+            <artifactId>thorntail-jta</artifactId>
         </dependency>
         <dependency>
             <groupId>io.thorntail</groupId>
@@ -51,12 +69,39 @@
             <artifactId>thorntail-health</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.hibernate.ogm</groupId>
+            <artifactId>hibernate-ogm-cassandra</artifactId>
+            <version>${hibernate.ogm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-orm</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.thorntail</groupId>
-            <artifactId>thorntail-websockets</artifactId>
+            <artifactId>thorntail-ogm</artifactId>
         </dependency>
         <dependency>
             <groupId>io.thorntail</groupId>
             <artifactId>thorntail-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cassandraunit</groupId>
+            <artifactId>cassandra-unit-shaded</artifactId>
+            <version>3.5.0.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -78,13 +123,14 @@
                         </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.ow2.asm</groupId>
-                        <artifactId>asm</artifactId>
-                        <version>7.0-beta</version>
-                    </dependency>
-                </dependencies>
+                <!-- Java 11 requires this, uncomment if using 11 -->
+                <!--<dependencies>-->
+                <!--<dependency>-->
+                <!--<groupId>org.ow2.asm</groupId>-->
+                <!--<artifactId>asm</artifactId>-->
+                <!--<version>7.0-beta</version>-->
+                <!--</dependency>-->
+                <!--</dependencies>-->
             </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
@@ -107,18 +153,19 @@
                         <JAR>${project.build.finalName}.jar</JAR>
                     </buildArgs>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.plexus</groupId>
-                        <artifactId>plexus-archiver</artifactId>
-                        <version>3.6.0</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>javax.activation</groupId>
-                        <artifactId>activation</artifactId>
-                        <version>1.1.1</version>
-                    </dependency>
-                </dependencies>
+                <!-- If running with JDK 11, this is needed -->
+                <!--<dependencies>-->
+                <!--<dependency>-->
+                <!--<groupId>org.codehaus.plexus</groupId>-->
+                <!--<artifactId>plexus-archiver</artifactId>-->
+                <!--<version>3.6.0</version>-->
+                <!--</dependency>-->
+                <!--<dependency>-->
+                <!--<groupId>javax.activation</groupId>-->
+                <!--<artifactId>activation</artifactId>-->
+                <!--<version>1.1.1</version>-->
+                <!--</dependency>-->
+                <!--</dependencies>-->
             </plugin>
         </plugins>
     </build>
@@ -146,5 +193,4 @@
             </snapshots>
         </repository>
     </repositories>
-
 </project>

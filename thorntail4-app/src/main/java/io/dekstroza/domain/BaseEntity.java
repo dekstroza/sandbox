@@ -1,4 +1,9 @@
 package io.dekstroza.domain;
 
-public class BaseEntity {
+public interface BaseEntity<T> {
+
+    T getId();
+
+    void setId(T t);
+
 }

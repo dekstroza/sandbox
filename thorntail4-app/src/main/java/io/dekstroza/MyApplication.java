@@ -1,9 +1,9 @@
 package io.dekstroza;
 
+import io.thorntail.Thorntail;
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-
-import io.thorntail.Thorntail;
 
 @ApplicationPath("/")
 public class MyApplication extends Application {

@@ -7,7 +7,7 @@
         </layout>
     </appender>
     <logger name="io.dekstroza" level="INFO"/>
-    <root level="OFF">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
