@@ -2,7 +2,8 @@
 
 ## Requirements 
 
-1. curl, obviously :)
+1. shell of choice
+2. curl
 
 
 ## Instructions
@@ -29,7 +30,7 @@ curl -w "@curl-format.txt" -o /dev/null -s  http://some-server/some-url
 
 and output will look like this:
 ```
-➜  thorntail4 git:(cdi-extension) ✗ curl -w "@curl-format.txt" -o /dev/null -s  http://localhost:8080/game/a50c0915-2e29-4a50-a7dc-fa72865c4949
+curl -w "@curl-format.txt" -o /dev/null -s  http://localhost:8080/game/a50c0915-2e29-4a50-a7dc-fa72865c4949
 time_namelookup:  0.004431
        time_connect:  0.004877
     time_appconnect:  0.000000
@@ -40,3 +41,7 @@ time_namelookup:  0.004431
          time_total:  0.067535
 
 ```
+Parameters:
+1. -w specify output format
+2. -o directs output to /dev/null as we dont care here about the content
+3. -s ask curl to be silent 
