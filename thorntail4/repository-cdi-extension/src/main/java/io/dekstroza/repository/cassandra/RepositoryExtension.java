@@ -1,4 +1,4 @@
-package io.dekstroza.repository.cdi.extension;
+package io.dekstroza.repository.cassandra;
 
 import com.datastax.driver.core.schemabuilder.Create;
 import com.datastax.driver.core.schemabuilder.SchemaBuilder;
@@ -6,11 +6,9 @@ import com.datastax.driver.mapping.MappingManager;
 import com.datastax.driver.mapping.annotations.Column;
 import com.datastax.driver.mapping.annotations.PartitionKey;
 import com.datastax.driver.mapping.annotations.Table;
+import io.dekstroza.repository.annotations.CassandraConfig;
+import io.dekstroza.repository.annotations.Repository;
 import io.dekstroza.repository.api.CrudRepository;
-import io.dekstroza.repository.cassandra.Cassandra;
-import io.dekstroza.repository.cdi.annotations.CassandraConfig;
-import io.dekstroza.repository.cdi.annotations.Repository;
-import io.dekstroza.repository.impl.CassandraCrudImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,20 +22,20 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.dekstroza.repository.cassandra.TypeMappings.typeMappings;
+import static io.dekstroza.repository.cassandra.TypeMappings.resolveType;
 
-public class RepositoryExtension<T> implements Extension {
+class RepositoryExtension<T> implements Extension {
 
-    Cassandra cassandra;
-    Map<Table, Create> createSet = new ConcurrentHashMap<>();
+    CassandraCluster cassandraCluster;
+    Map<Table, Create> createOnStartupCQL = new ConcurrentHashMap<>();
 
     private final Logger logger = LoggerFactory.getLogger(RepositoryExtension.class);
 
     public void cassandraConfig(@Observes @WithAnnotations(CassandraConfig.class) ProcessAnnotatedType pat) {
         final AnnotatedType<T> annotatedType = pat.getAnnotatedType();
         CassandraConfig cassandraConfig = annotatedType.getAnnotation(CassandraConfig.class);
-        if (cassandraConfig != null && cassandra == null) {
-            this.cassandra = new Cassandra(cassandraConfig.contact_points());
+        if (cassandraConfig != null && cassandraCluster == null) {
+            this.cassandraCluster = new CassandraCluster(cassandraConfig.contact_points());
         }
     }
 
@@ -49,14 +47,14 @@ public class RepositoryExtension<T> implements Extension {
             annotatedType.getFields().forEach(annotatedField -> {
                 PartitionKey partitionKeyAnnotation = annotatedField.getAnnotation(PartitionKey.class);
                 if (partitionKeyAnnotation != null) {
-                    createTable.addPartitionKey(annotatedField.getJavaMember().getName(), typeMappings.get(annotatedField.getJavaMember().getType()));
+                    createTable.addPartitionKey(annotatedField.getJavaMember().getName(), resolveType(annotatedField));
                 }
                 Column columnAnnotation = annotatedField.getAnnotation(Column.class);
                 if (columnAnnotation != null && partitionKeyAnnotation == null) {
-                    createTable.addColumn(annotatedField.getJavaMember().getName(), typeMappings.get(annotatedField.getJavaMember().getType()));
+                    createTable.addColumn(annotatedField.getJavaMember().getName(), resolveType(annotatedField));
                 }
             });
-            createSet.put(table, createTable);
+            createOnStartupCQL.put(table, createTable);
         }
     }
 
@@ -77,7 +75,7 @@ public class RepositoryExtension<T> implements Extension {
                                 final ParameterizedType pt = (ParameterizedType) field.getGenericType();
                                 try {
                                     field.set(instance,
-                                               createCrudRepository(new MappingManager(cassandra.getSession()), pt.getActualTypeArguments()[0],
+                                               createCrudRepository(new MappingManager(cassandraCluster.getSession()), pt.getActualTypeArguments()[0],
                                                           pt.getActualTypeArguments()[1]));
                                 } catch (IllegalArgumentException | IllegalAccessException | ClassNotFoundException e) {
                                     logger.error("Could not inject repository", e);
@@ -119,8 +117,8 @@ public class RepositoryExtension<T> implements Extension {
 
     public void afterDeploymentValidation(@Observes AfterDeploymentValidation adv, final BeanManager bm) {
         try {
-            cassandra.clusterConnect();
-            cassandra.createKeyspacesAndTables(createSet);
+            cassandraCluster.clusterConnect();
+            cassandraCluster.createKeyspacesAndTables(createOnStartupCQL);
         } catch (Exception e) {
             adv.addDeploymentProblem(e);
         }
@@ -132,6 +130,6 @@ public class RepositoryExtension<T> implements Extension {
 
     public void handleShutdown(@Observes final BeforeShutdown beforeShutdown) {
         logger.trace("Before shutdown called.");
-        cassandra.shutdown();
+        cassandraCluster.shutdown();
     }
 }

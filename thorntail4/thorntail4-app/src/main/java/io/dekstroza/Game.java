@@ -4,9 +4,10 @@ import com.datastax.driver.mapping.annotations.Column;
 import com.datastax.driver.mapping.annotations.PartitionKey;
 import com.datastax.driver.mapping.annotations.Table;
 
+import java.util.List;
 import java.util.UUID;
 
-@Table(keyspace = "ks", name = "games", readConsistency = "QUORUM", writeConsistency = "QUORUM", caseSensitiveKeyspace = false, caseSensitiveTable = false)
+@Table(keyspace = "ks1", name = "games1", readConsistency = "QUORUM", writeConsistency = "QUORUM", caseSensitiveKeyspace = false, caseSensitiveTable = false)
 public class Game {
 
     @PartitionKey
@@ -16,6 +17,9 @@ public class Game {
     private String bandName;
     @Column(name = "track")
     private String track;
+
+    @Column(name = "bandMembers")
+    private List<String> bandMembers;
 
     public UUID getId() {
         return id;
@@ -39,5 +43,13 @@ public class Game {
 
     public void setTrack(String track) {
         this.track = track;
+    }
+
+    public List<String> getBandMembers() {
+        return bandMembers;
+    }
+
+    public void setBandMembers(List<String> bandMembers) {
+        this.bandMembers = bandMembers;
     }
 }

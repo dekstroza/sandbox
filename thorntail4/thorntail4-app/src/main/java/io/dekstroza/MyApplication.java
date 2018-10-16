@@ -1,6 +1,6 @@
 package io.dekstroza;
 
-import io.dekstroza.repository.cdi.annotations.CassandraConfig;
+import io.dekstroza.repository.annotations.CassandraConfig;
 import io.thorntail.Thorntail;
 
 import javax.ws.rs.ApplicationPath;

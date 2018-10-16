@@ -1,4 +1,4 @@
-package io.dekstroza.repository.cdi.annotations;
+package io.dekstroza.repository.annotations;
 
 import java.lang.annotation.*;
 

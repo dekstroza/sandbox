@@ -4,7 +4,6 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.schemabuilder.Create;
 import com.datastax.driver.core.schemabuilder.SchemaBuilder;
-import com.datastax.driver.mapping.MappedProperty;
 import com.datastax.driver.mapping.annotations.Table;
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
@@ -12,40 +11,39 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class Cassandra {
+class CassandraCluster {
 
     final Cluster cluster;
-    final Logger logger = LoggerFactory.getLogger(Cassandra.class);
+    final Logger logger = LoggerFactory.getLogger(CassandraCluster.class);
     Session session;
 
-    public Cassandra(String[] contactPoints) {
+    CassandraCluster(String[] contactPoints) {
         this.cluster = Cluster.builder().withClusterName("myCluster").addContactPoints(contactPoints).build();
-        logger.trace("Created Cassandra Configuration from contact points:{}", contactPoints.toString());
+        logger.trace("Created Cassandra Configuration from contact points:{}", new Object[] { contactPoints });
     }
 
-    public void shutdown() {
+    void shutdown() {
         if (session != null && !session.isClosed()) {
             session.close();
-            logger.trace("Closed session.");
+            logger.trace("Session closed.");
         }
         if (!cluster.isClosed()) {
             cluster.close();
-            logger.trace("Closed cluster.");
+            logger.trace("Cluster closed.");
         }
     }
 
-    public Session getSession() {
+    Session getSession() {
         return session;
     }
 
-    public void clusterConnect() {
+    void clusterConnect() {
         this.session = cluster.connect();
-        logger.trace("Connected to cluster {}", cluster.getMetadata().toString());
+        logger.trace("Connected to cluster {}", cluster.getClusterName());
     }
 
-    public void createKeyspacesAndTables(Map<Table, Create> createMap) {
-
-        final ImmutableMap<String, Object> replicationMap = ImmutableMap.of("class", (Object) "SimpleStrategy", "replication_factor", 1);
+    void createKeyspacesAndTables(Map<Table, Create> createMap) {
+        final ImmutableMap<String, Object> replicationMap = ImmutableMap.of("class", "SimpleStrategy", "replication_factor", 1);
         createMap.forEach((table, create) -> {
             getSession().execute(SchemaBuilder.createKeyspace(table.keyspace()).ifNotExists().with().durableWrites(true).replication(replicationMap));
             getSession().execute(create);
