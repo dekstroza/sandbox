@@ -1,0 +1,4 @@
+apiVersion: apps/v1
+name: thorntail4-app
+version: 1.0.0
+
