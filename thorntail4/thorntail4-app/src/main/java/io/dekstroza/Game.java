@@ -12,11 +12,10 @@ public class Game {
     @PartitionKey
     @Column(name = "id")
     private UUID id;
+    @Column(name = "bandName")
     private String bandName;
+    @Column(name = "track")
     private String track;
-
-    public Game() {
-    }
 
     public UUID getId() {
         return id;
