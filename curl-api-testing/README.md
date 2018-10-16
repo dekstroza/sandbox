@@ -1,4 +1,4 @@
-# API latency with curl
+# HTTP API Latency with curl
 
 ## Requirements 
 
