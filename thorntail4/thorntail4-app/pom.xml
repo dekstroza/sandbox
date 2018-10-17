@@ -22,7 +22,7 @@
         <dockerfile-maven-version>1.4.4</dockerfile-maven-version>
         <thorntail.version>4.0.0-SNAPSHOT</thorntail.version>
         <logback.version>1.2.3</logback.version>
-        <dockerfile.skip>true</dockerfile.skip>
+        <dockerfile.skip>false</dockerfile.skip>
     </properties>
 
     <dependencyManagement>
@@ -139,28 +139,28 @@
             </plugin>
         </plugins>
     </build>
-    <!--<pluginRepositories>-->
-        <!--<pluginRepository>-->
-            <!--<id>oss.sonatype.org-snapshot</id>-->
-            <!--<url>https://oss.sonatype.org/content/repositories/snapshots/</url>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-            <!--<releases>-->
-                <!--<enabled>false</enabled>-->
-            <!--</releases>-->
-        <!--</pluginRepository>-->
-    <!--</pluginRepositories>-->
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>oss.sonatype.org-snapshot</id>-->
-            <!--<url>https://oss.sonatype.org/content/repositories/snapshots/</url>-->
-            <!--<releases>-->
-                <!--<enabled>false</enabled>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-    <!--</repositories>-->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>oss.sonatype.org-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+    <repositories>
+        <repository>
+            <id>oss.sonatype.org-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
