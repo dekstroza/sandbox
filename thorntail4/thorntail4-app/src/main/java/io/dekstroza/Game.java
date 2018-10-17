@@ -7,49 +7,57 @@ import com.datastax.driver.mapping.annotations.Table;
 import java.util.List;
 import java.util.UUID;
 
-@Table(keyspace = "ks1", name = "games1", readConsistency = "QUORUM", writeConsistency = "QUORUM", caseSensitiveKeyspace = false, caseSensitiveTable = false)
+@Table(
+    keyspace = "ks1",
+    name = "games1",
+    readConsistency = "QUORUM",
+    writeConsistency = "QUORUM",
+    caseSensitiveKeyspace = false,
+    caseSensitiveTable = false)
 public class Game {
 
-    @PartitionKey
-    @Column(name = "id")
-    private UUID id;
-    @Column(name = "bandName")
-    private String bandName;
-    @Column(name = "track")
-    private String track;
+  @PartitionKey
+  @Column(name = "id")
+  private UUID id;
 
-    @Column(name = "bandMembers")
-    private List<String> bandMembers;
+  @Column(name = "bandName")
+  private String bandName;
 
-    public UUID getId() {
-        return id;
-    }
+  @Column(name = "track")
+  private String track;
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+  @Column(name = "bandMembers")
+  private List<String> bandMembers;
 
-    public String getBandName() {
-        return bandName;
-    }
+  public UUID getId() {
+    return id;
+  }
 
-    public void setBandName(String bandName) {
-        this.bandName = bandName;
-    }
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
-    public String getTrack() {
-        return track;
-    }
+  public String getBandName() {
+    return bandName;
+  }
 
-    public void setTrack(String track) {
-        this.track = track;
-    }
+  public void setBandName(String bandName) {
+    this.bandName = bandName;
+  }
 
-    public List<String> getBandMembers() {
-        return bandMembers;
-    }
+  public String getTrack() {
+    return track;
+  }
 
-    public void setBandMembers(List<String> bandMembers) {
-        this.bandMembers = bandMembers;
-    }
+  public void setTrack(String track) {
+    this.track = track;
+  }
+
+  public List<String> getBandMembers() {
+    return bandMembers;
+  }
+
+  public void setBandMembers(List<String> bandMembers) {
+    this.bandMembers = bandMembers;
+  }
 }

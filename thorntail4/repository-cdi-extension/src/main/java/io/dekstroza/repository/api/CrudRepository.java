@@ -4,12 +4,11 @@ import java.util.Optional;
 
 public interface CrudRepository<X, I> {
 
-    Optional<X> findById(I id);
+  Optional<X> findById(I id);
 
-    X create(X entity);
+  X create(X entity);
 
-    X update(X entity);
+  X update(X entity);
 
-    void delete(X entity);
-
+  void delete(X entity);
 }

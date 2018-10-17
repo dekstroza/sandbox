@@ -6,10 +6,10 @@ import io.thorntail.Thorntail;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@CassandraConfig(contact_points = { "127.0.0.1" })
+@CassandraConfig
 @ApplicationPath("/")
 public class MyApplication extends Application {
-    public static void main(String... args) throws Exception {
-        Thorntail.run();
-    }
+  public static void main(String... args) throws Exception {
+    Thorntail.run();
+  }
 }

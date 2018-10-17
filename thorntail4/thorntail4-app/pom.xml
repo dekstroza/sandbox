@@ -19,7 +19,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <docker.repository>dekstroza/thorntail4-app</docker.repository>
-        <dockerfile-maven-version>1.4.4</dockerfile-maven-version>
+        <dockerfile-maven-version>1.4.7</dockerfile-maven-version>
         <thorntail.version>4.0.0-SNAPSHOT</thorntail.version>
         <logback.version>1.2.3</logback.version>
         <dockerfile.skip>false</dockerfile.skip>
@@ -73,6 +73,12 @@
         <dependency>
             <groupId>io.thorntail</groupId>
             <artifactId>thorntail-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cassandraunit</groupId>
+            <artifactId>cassandra-unit</artifactId>
+            <version>3.5.0.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

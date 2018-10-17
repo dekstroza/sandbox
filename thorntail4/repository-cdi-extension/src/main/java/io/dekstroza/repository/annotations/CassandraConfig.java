@@ -6,6 +6,4 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface CassandraConfig {
-    String[] contact_points() default {"127.0.0.1"};
-}
+public @interface CassandraConfig {}

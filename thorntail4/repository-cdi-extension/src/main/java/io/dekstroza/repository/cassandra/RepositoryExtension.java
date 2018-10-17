@@ -9,6 +9,8 @@ import com.datastax.driver.mapping.annotations.Table;
 import io.dekstroza.repository.annotations.CassandraConfig;
 import io.dekstroza.repository.annotations.Repository;
 import io.dekstroza.repository.api.CrudRepository;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +37,10 @@ class RepositoryExtension<T> implements Extension {
         final AnnotatedType<T> annotatedType = pat.getAnnotatedType();
         CassandraConfig cassandraConfig = annotatedType.getAnnotation(CassandraConfig.class);
         if (cassandraConfig != null && cassandraCluster == null) {
-            this.cassandraCluster = new CassandraCluster(cassandraConfig.contact_points());
+            Config config = ConfigProvider.getConfig();
+            String[] contactPoints = config.getOptionalValue("cassandra.contact.points", String[].class).orElse(new String[] { "127.0.0.1" });
+            Integer port = config.getOptionalValue("cassandra.port", Integer.class).orElse(9042);
+            this.cassandraCluster = new CassandraCluster(contactPoints, port);
         }
     }
 
