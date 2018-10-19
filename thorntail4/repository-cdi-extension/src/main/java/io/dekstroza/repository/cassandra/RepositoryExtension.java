@@ -50,7 +50,9 @@ class RepositoryExtension<T> implements Extension {
       Integer port = config.getOptionalValue("cassandra.port", Integer.class).orElse(9042);
       String clusterName =
           config.getOptionalValue("cassandra.cluster.name", String.class).orElse("localCluster");
-      this.cassandraCluster = new CassandraCluster(contactPoints, clusterName, port);
+      final boolean createKSAndTables = enableCassandraRepository.create();
+      this.cassandraCluster =
+          new CassandraCluster(contactPoints, clusterName, port, createKSAndTables);
     }
   }
 
@@ -152,7 +154,12 @@ class RepositoryExtension<T> implements Extension {
       logger.info("Cassandra Repository Extension: Connecting to Cassandra Cluster.");
       try {
         cassandraCluster.clusterConnect();
-        cassandraCluster.createKeyspacesAndTables(createOnStartupCQL);
+        if (cassandraCluster.getCreateKSAndTables()) {
+          logger.trace("Creating keyspace(s) and tables.");
+          cassandraCluster.createKeyspacesAndTables(createOnStartupCQL);
+        } else {
+          logger.trace("Skipping keyspace(s) and table creation.");
+        }
       } catch (Exception e) {
         adv.addDeploymentProblem(e);
       }

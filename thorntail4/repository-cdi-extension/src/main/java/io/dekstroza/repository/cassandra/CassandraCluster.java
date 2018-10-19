@@ -16,8 +16,10 @@ class CassandraCluster {
   private final Cluster cluster;
   private final Logger logger = LoggerFactory.getLogger(CassandraCluster.class);
   private Session session;
+  private boolean createKSAndTables = true;
 
-  CassandraCluster(String[] contactPoints, String clusterName, int port) {
+  CassandraCluster(
+      String[] contactPoints, String clusterName, int port, boolean createKSAndTables) {
     this.cluster =
         Cluster.builder()
             .withClusterName(clusterName)
@@ -29,6 +31,7 @@ class CassandraCluster {
         clusterName,
         contactPoints,
         port);
+    this.createKSAndTables = createKSAndTables;
   }
 
   void shutdown() {
@@ -42,6 +45,10 @@ class CassandraCluster {
     }
   }
 
+  boolean getCreateKSAndTables() {
+    return createKSAndTables;
+  }
+
   Session getSession() {
     return session;
   }
@@ -51,7 +58,6 @@ class CassandraCluster {
     logger.info("Connected to cluster {}", cluster.getClusterName());
   }
 
-  // TODO: Provide annotation paramters to specify creation options
   void createKeyspacesAndTables(Map<Table, Create> createMap) {
     final ImmutableMap<String, Object> replicationMap =
         ImmutableMap.of("class", "SimpleStrategy", "replication_factor", 1);
