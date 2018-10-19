@@ -5,13 +5,15 @@ Basic Thorntail 4 example with Cassandra Extension. Project has two modules:
 2. thorntail4-demo-app
 
 First module contains the source code of the extension, and second module contains
-demo application using it. Both can be built with either JDK 8 or JDK 11. If using JDK 11 tests will be skipped. Demo application can be run by simply running ```GameService``` from IDE with run, or from the command line (after successful build) with:
+demo application using it. Both can be built with either JDK 8 or JDK 11. If using JDK 11 tests will be skipped (keep reading to se why). 
+
+Demo application can be run by simply running ```GameService``` from IDE with run, or from the command line (after successful build) with:
 ```bash
 cd  target
 ./thorntail4-demo-app-1.0.1-SNAPSHOT-bin/bin/run.sh
 
 ```
-Similarly, if using JDK 8, tests can be executed from IDE, by just running them as any other JUNIT test. Demo application also contains k8s folder with helm chart for running demo application on kubernetes, this will required Cassandra deployed on kubernetes, and values.yaml file has to be adjusted to point to cassandra nodes and ports.
+Similarly, if using JDK 8, tests can be executed from IDE, by just running them as any other JUNIT test. Demo application contains k8s folder with helm chart for running demo application on kubernetes, this will required Cassandra deployed on kubernetes, and values.yaml file has to be adjusted to point to cassandra nodes and ports.
 
 Docker container is built using customised alpine image, with JDK 11 reduced down to only modules used by the demo app, producing very small container size. This is achieved using jdeps/jlink and multistage docker build.
 
@@ -25,8 +27,8 @@ Docker container is built using customised alpine image, with JDK 11 reduced dow
 
 ## Build instructions
 
-To build without running test cases used JDK 11, build will automatically disable testcases. Cassandra does not support
-jdk 11, so test cases will fail when running embedded cassandra with cassandra-unit.
+To build without running test cases use JDK 11, build will automatically disable them. Cassandra does not support
+JDK 11, so test cases will fail when running embedded cassandra with cassandra-unit.
 Docker container will be built automatically when project is built with:
 
 ```
@@ -163,10 +165,10 @@ public class GameResource {
 ```
 
 Interface ```CrudRepository``` offers both sync and async methods to delete, read, update and delete entities. See javdocs for more informations on the available methods. 
-##### Keyspace and Tables Creation
+####Keyspace and Tables Creation
 If not specified on ```@EnableCassandraRepository``` extension will create keyspaces and tables for all annotated classes. This is limited just to keyspaces and tables, and very simplistic for start. For more complicated cases, disable creation by specifying ```@EnableCassandraRepository(create=false)``` and create all the keyspaces and tables manually.
 
-##### Configuring Cassandra Connection
+#### Configuring Cassandra Connection
 Cassandra configuration is specified using micro-profile config, so there are multiple ways to do it.
 
 - Create application.properties file and place it into META-INF folder:
