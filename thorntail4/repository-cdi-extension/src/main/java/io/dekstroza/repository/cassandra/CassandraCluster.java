@@ -13,9 +13,9 @@ import java.util.Map;
 
 class CassandraCluster {
 
-  final Cluster cluster;
-  final Logger logger = LoggerFactory.getLogger(CassandraCluster.class);
-  Session session;
+  private final Cluster cluster;
+  private final Logger logger = LoggerFactory.getLogger(CassandraCluster.class);
+  private Session session;
 
   CassandraCluster(String[] contactPoints, String clusterName, int port) {
     this.cluster =
@@ -24,9 +24,11 @@ class CassandraCluster {
             .addContactPoints(contactPoints)
             .withPort(port)
             .build();
-    logger.trace(
+    logger.info(
         "Created Cassandra Cluster [{}] Configuration using contact points:{} and port {}",
-        new Object[] {clusterName, contactPoints, port});
+        clusterName,
+        contactPoints,
+        port);
   }
 
   void shutdown() {
@@ -36,7 +38,7 @@ class CassandraCluster {
     }
     if (!cluster.isClosed()) {
       cluster.close();
-      logger.info("Cluster closed.");
+      logger.info("Cluster disconnected.");
     }
   }
 
@@ -49,6 +51,7 @@ class CassandraCluster {
     logger.info("Connected to cluster {}", cluster.getClusterName());
   }
 
+  // TODO: Provide annotation paramters to specify creation options
   void createKeyspacesAndTables(Map<Table, Create> createMap) {
     final ImmutableMap<String, Object> replicationMap =
         ImmutableMap.of("class", "SimpleStrategy", "replication_factor", 1);

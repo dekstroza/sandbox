@@ -21,16 +21,14 @@ class CassandraCrudImpl<X, I> implements CrudRepository<X, I> {
   private final Logger logger = LoggerFactory.getLogger(CassandraCrudImpl.class);
   private MappingManager mappingManager;
   private Class<X> xClass;
-  private Class<I> iClass;
 
-  public CassandraCrudImpl(MappingManager mappingManager, Class<X> x, Class<I> i) {
+  CassandraCrudImpl(MappingManager mappingManager, Class<X> x, Class<I> i) {
     logger.trace(
         "Creating CassandraCrud Bean for type {} with id type {}.",
         x.getCanonicalName(),
         i.getCanonicalName());
     this.mappingManager = mappingManager;
     this.xClass = x;
-    this.iClass = i;
   }
 
   public Optional<X> findById(@NotNull I id) {
@@ -76,6 +74,7 @@ class CassandraCrudImpl<X, I> implements CrudRepository<X, I> {
     return buildCompletableFuture(mappingManager.mapper(xClass).deleteAsync(entity));
   }
 
+  /** Convert ListenableFuture to CompletableFuture */
   private static <T> CompletableFuture<T> buildCompletableFuture(
       final ListenableFuture<T> listenableFuture) {
     // create an instance of CompletableFuture

@@ -39,6 +39,9 @@ class RepositoryExtension<T> implements Extension {
     EnableCassandraRepository enableCassandraRepository =
         annotatedType.getAnnotation(EnableCassandraRepository.class);
     if (enableCassandraRepository != null && cassandraCluster == null) {
+      logger.trace(
+          "Found @EnableCassandraRepository on {}",
+          pat.getAnnotatedType().getJavaClass().getCanonicalName());
       Config config = ConfigProvider.getConfig();
       String[] contactPoints =
           config
@@ -77,7 +80,7 @@ class RepositoryExtension<T> implements Extension {
     }
   }
 
-  public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> pit) {
+  public void processInjectionTarget(@Observes ProcessInjectionTarget<T> pit) {
     final InjectionTarget<T> it = pit.getInjectionTarget();
     final AnnotatedType<T> at = pit.getAnnotatedType();
     final InjectionTarget<T> wrapped =
@@ -144,8 +147,7 @@ class RepositoryExtension<T> implements Extension {
     pit.setInjectionTarget(wrapped);
   }
 
-  public void afterDeploymentValidation(
-      @Observes AfterDeploymentValidation adv, final BeanManager bm) {
+  public void afterDeploymentValidation(@Observes AfterDeploymentValidation adv) {
     if (cassandraCluster != null) {
       logger.info("Cassandra Repository Extension: Connecting to Cassandra Cluster.");
       try {
