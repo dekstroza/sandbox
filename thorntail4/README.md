@@ -61,17 +61,18 @@ use cassandra-unit which starts embedded Cassandra on jvm used by mvn itself.
 
 ## Using Extension
 To use extension with Thorntail 4 add dependency into pom.xml 
-```
-        <dependency>
-            <groupId>io.dekstroza</groupId>
-            <artifactId>repository-cdi-extension</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
-        </dependency>
+```xml
+<dependency>
+  <groupId>io.dekstroza</groupId>
+  <artifactId>repository-cdi-extension</artifactId>
+  <version>1.0.1-SNAPSHOT</version>
+</dependency>
 ``` 
 Annotate class containing main method with ```@EnableCassandraRepository``` (this will activate extension), otherwise no injection will happend, nor it will try
-to connect to Cassandra cluster. For example:
-```
-@EnableCassandraRepository
+to connect to Cassandra cluster. Annotation has additional property called ```create``` which is set by default to true, and will cause extension to create keyspaces and tables for annotated classes found. 
+Example:
+```java
+@EnableCassandraRepository(create=false)
 @ApplicationPath("/")
 public class GameService extends Application {
   public static void main(String... args) throws Exception {
@@ -83,7 +84,7 @@ Create your model classes and annotate them using cassandra driver annotations,
 see: [https://docs.datastax.com](https://docs.datastax.com/en/developer/java-driver/3.2/manual/object_mapper/) for more details.
 
 For example:
-```
+```java
 package io.dekstroza.model;
 
 import com.datastax.driver.mapping.annotations.Column;
@@ -169,19 +170,31 @@ public class Game {
 Once all model classes are annotated, create your repository bean (can be application scope or request scope)
 and add repository field, marking entity type and type of cassandra partition key used for it. In the example bellow
 Game is entity type, and it's partition key will be UUID type.
-```
+```java
 @ApplicationScoped
 @Transactional
 public class GameResource {
 
   @Repository private CrudRepository<Game, UUID> repository;
+}
+```
+or if not using application scoped bean:
+```java
+@RequestScope
+@Transactional
+public class GameResource {
+
+  @Repository private CrudRepository<Game, UUID> repository;
+}
   
-  ...
+ 
 ```
 
-Interface ```CrudRepository``` offers both sync and async methods to delete, read, update and delete entities. See javdocs for more informations on the available methods. 
+Interface ```CrudRepository``` offers both sync and async methods to delete, read, update and delete entities. See javdocs for more information on the available methods. Use the provided CrudRepository to create, read, update and delete objects in Cassandra.
+
 ####Keyspace and Tables Creation
-If not specified on ```@EnableCassandraRepository``` extension will create keyspaces and tables for all annotated classes. This is limited just to keyspaces and tables, and very simplistic for start. For more complicated cases, disable creation by specifying ```@EnableCassandraRepository(create=false)``` and create all the keyspaces and tables manually.
+If not specified on ```@EnableCassandraRepository``` extension will create keyspaces and tables for all annotated classes. This is limited just to keyspace(s) and tables, and very simplistic for start. 
+For more complicated cases, disable creation by specifying ```@EnableCassandraRepository(create=false)``` and create all the keyspace(s) and tables manually.
 
 #### Configuring Cassandra Connection
 Cassandra configuration is specified using micro-profile config, so there are multiple ways to do it.
