@@ -10,7 +10,7 @@
     <artifactId>repository-cdi-extension</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Repository CDI Extension</name>
+    <name>Thorntail 4 Cassandra Repository CDI Extension</name>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -88,6 +88,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
 </project>

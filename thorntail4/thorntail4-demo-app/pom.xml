@@ -2,16 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>io.dekstroza</groupId>
         <artifactId>thorntail4</artifactId>
         <version>1.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>thorntail4-app</artifactId>
+    <artifactId>thorntail4-demo-app</artifactId>
     <packaging>jar</packaging>
     <version>1.0.1-SNAPSHOT</version>
-
     <name>Thorntail 4 Cassandra Demo App</name>
 
     <properties>
@@ -22,7 +20,7 @@
         <dockerfile-maven-version>1.4.7</dockerfile-maven-version>
         <thorntail.version>4.0.0-SNAPSHOT</thorntail.version>
         <logback.version>1.2.3</logback.version>
-        <dockerfile.skip>true</dockerfile.skip>
+        <dockerfile.skip>false</dockerfile.skip>
     </properties>
 
     <dependencyManagement>

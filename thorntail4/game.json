@@ -1,1 +1,8 @@
-{"bandName":"Eminem","track":"Maybe you need me","bandMembers":["Joe","Tony","Michael","Nenad","Dejan"]}
+{
+  "bandName": "Eminem",
+  "track": "Maybe you need me",
+  "bandMembers": [
+    "Nenad",
+    "Dejan"
+  ]
+}

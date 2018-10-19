@@ -21,11 +21,12 @@ import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.*;
 
 @RunWith(JUnit4.class)
-public class CassandraRepositoryTest {
+public class CassandraRepositoryTestIT {
 
-  private static final Logger log = LoggerFactory.getLogger(CassandraRepositoryTest.class);
+  private static final Logger log = LoggerFactory.getLogger(CassandraRepositoryTestIT.class);
   private Game newGame;
 
+  /** try-catch due to cassandra-unit startup throwing exception - TODO: figure out why */
   @BeforeClass
   public static void startCassandra() {
     try {
@@ -135,6 +136,7 @@ public class CassandraRepositoryTest {
         .statusCode(is(204));
   }
 
+  /** try-catch due to exceptions thrown by cassandra-unit - TODO: Figure out why? */
   @AfterClass
   public static void cleanup() {
     try {

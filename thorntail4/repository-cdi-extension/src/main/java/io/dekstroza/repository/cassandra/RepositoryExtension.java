@@ -19,12 +19,12 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.dekstroza.repository.cassandra.TypeMappings.resolveType;
+import static java.util.Arrays.asList;
 
 class RepositoryExtension<T> implements Extension {
 
@@ -88,7 +88,7 @@ class RepositoryExtension<T> implements Extension {
           @Override
           public void inject(T instance, CreationalContext<T> ctx) {
             it.inject(instance, ctx);
-            Arrays.asList(at.getJavaClass().getDeclaredFields())
+            asList(at.getJavaClass().getDeclaredFields())
                 .forEach(
                     field -> {
                       final Repository annotation = field.getAnnotation(Repository.class);
@@ -159,8 +159,8 @@ class RepositoryExtension<T> implements Extension {
     }
   }
 
-  CrudRepository createCrudRepository(MappingManager mappingManager, Type entityType, Type idType)
-      throws ClassNotFoundException {
+  private CrudRepository createCrudRepository(
+      MappingManager mappingManager, Type entityType, Type idType) throws ClassNotFoundException {
     return new CassandraCrudImpl(
         mappingManager,
         Class.forName(entityType.getTypeName()),

@@ -17,6 +17,21 @@ spec:
       containers:
       - name: thorntail4-app
         image: "{{ .Values.image }}:{{ .Values.tag }}"
+        env:
+        - name: WEB_PRIMARY_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: WEB_MANAGEMENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: CASSANDRA_CLUSTER_NAME
+          value: "{{ .Values.cassandraClusterName }}"
+        - name: CASSANDRA_CONTACT_POINTS
+          value: "{{ .Values.cassandraContactPoints }}"
+        - name: CASSANDRA_PORT
+          value: "{{ .Values.cassandraPort }}"
         args: ["-XX:+UnlockExperimentalVMOptions"]
         resources:
           limits:

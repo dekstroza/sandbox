@@ -7,4 +7,6 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface EnableCassandraRepository {}
+public @interface EnableCassandraRepository {
+  boolean create() default true;
+}
