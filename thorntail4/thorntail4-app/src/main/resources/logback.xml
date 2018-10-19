@@ -6,8 +6,8 @@
             <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
         </layout>
     </appender>
-    <logger name="io.dekstroza" level="TRACE"/>
-    <root level="OFF">
+    <logger name="io.dekstroza" level="INFO"/>
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

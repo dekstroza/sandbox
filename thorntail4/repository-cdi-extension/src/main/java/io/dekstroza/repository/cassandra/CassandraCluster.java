@@ -17,26 +17,26 @@ class CassandraCluster {
   final Logger logger = LoggerFactory.getLogger(CassandraCluster.class);
   Session session;
 
-  CassandraCluster(String[] contactPoints, int port) {
+  CassandraCluster(String[] contactPoints, String clusterName, int port) {
     this.cluster =
         Cluster.builder()
-            .withClusterName("myCluster")
+            .withClusterName(clusterName)
             .addContactPoints(contactPoints)
             .withPort(port)
             .build();
     logger.trace(
-        "Created Cassandra Configuration from contact points:{} and port {}",
-        new Object[] {contactPoints, port});
+        "Created Cassandra Cluster [{}] Configuration using contact points:{} and port {}",
+        new Object[] {clusterName, contactPoints, port});
   }
 
   void shutdown() {
     if (session != null && !session.isClosed()) {
       session.close();
-      logger.trace("Session closed.");
+      logger.info("Session closed.");
     }
     if (!cluster.isClosed()) {
       cluster.close();
-      logger.trace("Cluster closed.");
+      logger.info("Cluster closed.");
     }
   }
 
@@ -46,7 +46,7 @@ class CassandraCluster {
 
   void clusterConnect() {
     this.session = cluster.connect();
-    logger.trace("Connected to cluster {}", cluster.getClusterName());
+    logger.info("Connected to cluster {}", cluster.getClusterName());
   }
 
   void createKeyspacesAndTables(Map<Table, Create> createMap) {

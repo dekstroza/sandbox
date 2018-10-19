@@ -1,10 +1,11 @@
-package io.dekstroza;
+package io.dekstroza.model;
 
 import com.datastax.driver.mapping.annotations.Column;
 import com.datastax.driver.mapping.annotations.PartitionKey;
 import com.datastax.driver.mapping.annotations.Table;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Table(
@@ -59,5 +60,21 @@ public class Game {
 
   public void setBandMembers(List<String> bandMembers) {
     this.bandMembers = bandMembers;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Game game = (Game) o;
+    return Objects.equals(getId(), game.getId())
+        && Objects.equals(getBandName(), game.getBandName())
+        && Objects.equals(getTrack(), game.getTrack())
+        && Objects.equals(getBandMembers(), game.getBandMembers());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getBandName(), getTrack(), getBandMembers());
   }
 }
