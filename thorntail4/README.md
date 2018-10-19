@@ -39,12 +39,12 @@ To disable docker build run
 ./mvnw clean install -Ddockerfile.skip
 ```
 or alternatively, if you would like to completely disable docker build, set property ```dockerfile.skip``` to ```true``` inside ```thorntail4-demo-app/pom.xml```.
-When building docker image, please adjust property 
+When building docker image, please adjust property: 
 ```
 <docker.repository>dekstroza/thorntail4-app</docker.repository>
 ```
-from demo application pom file, to point to docker repository to which you have access. Format is repository/image-name, and tag will be used from project version.
-Same information has to be provided in k8s helm chart, adjusting values.yaml file and corresponding settings.
+in demo application pom file, so that it points to docker repository to which you have access. Format is repository/image-name, and tag will be used from project version.
+Same information has to be provided in k8s helm chart, adjusting ```values.yaml``` file and corresponding settings.
 ```yaml
 image: dekstroza/thorntail4-app
 tag: 1.0.1-SNAPSHOT
