@@ -196,7 +196,7 @@ or
 ```
 or use the other ways to configure these, for details see: [https://docs.thorntail.io](https://docs.thorntail.io/4.0.0-SNAPSHOT/#_configuration)
 
-##Limitations
+## Limitations
 
 Available types mapped to Cassandra table types are limited to basic java types + Set,Map and List. More to come soon.
 Custom type definitions and accessors are not yet supported.
