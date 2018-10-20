@@ -13,10 +13,14 @@ cd  target
 ./thorntail4-demo-app-1.0.1-SNAPSHOT-bin/bin/run.sh
 
 ```
-Similarly, if using JDK 8, tests can be executed from IDE, by just running them as any other JUNIT test. Demo application contains k8s folder with helm chart for running demo application on kubernetes, this will required Cassandra deployed on kubernetes, and values.yaml file has to be adjusted to point to cassandra nodes and ports.
+Similarly, if using JDK 8, tests can be executed from IDE, by just running them as any other junit test. Demo application also contains k8s folder with helm chart for running demo application on kubernetes, this will require Cassandra deployed and reachable on kubernetes, and ```values.yaml``` file has to be adjusted to point to cassandra nodes and port.
 
-Docker container is built using customised alpine image, with JDK 11 reduced down to only modules used by the demo app, producing very small container size. This is achieved using jdeps/jlink and multistage docker build.
+Docker container is built using alpine image, customised with JDK 11 reduced down to only modules used by the demo app, producing very small container size. This is achieved using jdeps/jlink and multistage docker build.
 
+```bash
+REPOSITORY                                               TAG                 IMAGE ID            CREATED             SIZE
+dekstroza/thorntail4-app                                 1.0.1-SNAPSHOT      306d7db6b952        10 hours ago        83.6MB
+```
  
 
 ## Requirements
@@ -27,7 +31,7 @@ Docker container is built using customised alpine image, with JDK 11 reduced dow
 
 ## Build instructions
 
-To build without running test cases use JDK 11, build will automatically disable them. Cassandra does not support
+To build without running tests use JDK 11, build will automatically disable them. Cassandra does not support
 JDK 11, so test cases will fail when running embedded cassandra with cassandra-unit.
 Docker container will be built automatically when project is built with:
 
@@ -56,8 +60,7 @@ cassandraPort: 9042
 ```
 
 ## Running Test Cases
-When JDK 8 is used, testcases will be executed as well, otherwise if jdk11 is used, they will be skipped. Reason for this is problem with running Cassandra on JDK 11, and some of the test cases
-use cassandra-unit which starts embedded Cassandra on jvm used by mvn itself.
+When JDK 8 is used, testcases will be executed as well, otherwise if jdk11 is used, they will be skipped. Reason for this is problem with running Cassandra on JDK 11, and some of the test cases use cassandra-unit which starts embedded Cassandra on jvm used by mvn itself. Tests can be run like any other junit.
 
 ## Using Extension
 To use extension with Thorntail 4 add dependency into pom.xml 
