@@ -62,6 +62,13 @@ cassandraPort: 9042
 ## Running Test Cases
 When JDK 8 is used, testcases will be executed as well, otherwise if jdk11 is used, they will be skipped. Reason for this is problem with running Cassandra on JDK 11, and some of the test cases use cassandra-unit which starts embedded Cassandra on jvm used by mvn itself. Tests can be run like any other junit.
 
+## Demo application
+Thorntail 4 application using the extension to expose crud operations over http api. Illustrates some of the thorntail 4 features, such as out of the box healthchecks, and metrics on all api methods.
+Healthcheck is reachable (by default) on ```http://localhost:8080/health``` and all http methods are metered and metrics exposed in prometheus format on ```/metrics```.
+Helm chart and kubernetes take this into account, through prometheus annotations, so when deployed on k8s with prometheus, it will be automatically scraped.
+
+Demo application also showcases multistage docker container build, producing tiny (when compared to usual java docker containers) image, running application inside as unpriviledged user. 
+
 ## Using Extension
 To use extension with Thorntail 4 add dependency into pom.xml 
 ```xml
