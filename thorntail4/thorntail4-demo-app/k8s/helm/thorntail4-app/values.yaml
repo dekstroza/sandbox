@@ -1,6 +1,6 @@
 image: dekstroza/thorntail4-app
 tag: 1.0.1-SNAPSHOT
-pullPolicy: Always
+pullPolicy: IfNotPresent
 cassandraClusterName: myCluster
-cassandraContactPoints: cassandra-node
+cassandraContactPoints: 192.168.1.132
 cassandraPort: 9042

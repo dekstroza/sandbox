@@ -4,7 +4,7 @@ FROM dekstroza/alpine-11-jdk as jvm-packager
 RUN jlink \
     --module-path /jdk-11/jmods \
     --verbose \
-    --add-modules java.base,java.logging,java.xml,java.naming,java.desktop,java.management,java.datatransfer,java.sql,jdk.unsupported \
+    --add-modules java.base,java.rmi,java.logging,java.xml,java.naming,java.desktop,java.management,java.datatransfer,java.sql,jdk.unsupported \
     --compress 2 \
     --no-header-files \
     --output /jdk-11-minimal
@@ -19,8 +19,8 @@ ARG JAR
 ENV LANG C.UTF-8
 ENV JAVA_HOME="/jdk-11-minimal"
 ENV PATH=$PATH:${JAVA_HOME}/bin
-COPY --from=jvm-packager /jdk-11-minimal /jdk-11-minimal
 USER appuser
-ADD target/${DIR} /thorntail4-app
 WORKDIR /thorntail4-app/bin
-ADD target/${JAR} /thorntail4-app/app/
+COPY --from=jvm-packager /jdk-11-minimal /jdk-11-minimal
+ADD --chown=appuser:appuser target/${DIR}  /thorntail4-app
+ADD --chown=appuser:appuser target/${JAR} /thorntail4-app/app/
