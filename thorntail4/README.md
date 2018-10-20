@@ -195,7 +195,7 @@ public class GameResource {
 
 Interface ```CrudRepository``` offers both sync and async methods to delete, read, update and delete entities. See javdocs for more information on the available methods. Use the provided CrudRepository to create, read, update and delete objects in Cassandra.
 
-####Keyspace and Tables Creation
+#### Keyspace and Tables Creation
 If not specified on ```@EnableCassandraRepository``` extension will create keyspaces and tables for all annotated classes. This is limited just to keyspace(s) and tables, and very simplistic for start. 
 For more complicated cases, disable creation by specifying ```@EnableCassandraRepository(create=false)``` and create all the keyspace(s) and tables manually.
 
