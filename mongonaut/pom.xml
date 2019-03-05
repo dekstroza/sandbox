@@ -39,11 +39,11 @@
             <artifactId>micronaut-http-server-netty</artifactId>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>io.micronaut.configuration</groupId>
-            <artifactId>micronaut-mongo-reactive</artifactId>
-            <scope>compile</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>io.micronaut.configuration</groupId>-->
+            <!--<artifactId>micronaut-mongo-reactive</artifactId>-->
+            <!--<scope>compile</scope>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-inject</artifactId>
