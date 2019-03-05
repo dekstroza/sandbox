@@ -1,4 +1,0 @@
-image: ${dockerRepo}/${artifactId}
-tag: ${version}
-pullPolicy: IfNotPresent
-
