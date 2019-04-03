@@ -1,9 +1,22 @@
 micronaut:
     application:
         name: mongonaut
+    metrics:
+      enabled: true
+
 mongodb:
     uri: mongodb://mongonaut:mongonaut1234@localhost:27017/mongonaut
 endpoints:
+  prometheus:
+    sensitive: false
+  metrics:
+    enabled: true
+    sensitive: false
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: true
   info:
     enabled: true
     sensitive: false
