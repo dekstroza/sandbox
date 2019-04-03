@@ -4,12 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.dekstroza</groupId>
     <artifactId>mongonaut</artifactId>
-    <version>0.1</version>
+    <version>1.0.0-SNAPSHOT</version>
     <properties>
-        <micronaut.version>1.0.4</micronaut.version>
+        <micronaut.version>1.1.0.RC2</micronaut.version>
         <jdk.version>1.8</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>io.dekstroza.Application</exec.mainClass>
+        <docker.repo>dekstroza</docker.repo>
     </properties>
     <repositories>
         <repository>
@@ -58,6 +59,10 @@
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-runtime</artifactId>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.micronaut</groupId>
+            <artifactId>micronaut-management</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.annotation</groupId>
@@ -130,10 +135,31 @@
                     <arguments>
                         <argument>-noverify</argument>
                         <argument>-XX:TieredStopAtLevel=1</argument>
+                        <argument>-Dcom.sun.management.jmxremote</argument>
                         <argument>-classpath</argument>
                         <classpath/>
                         <argument>${exec.mainClass}</argument>
                     </arguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.10</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>${docker.repo}/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
                 </configuration>
             </plugin>
         </plugins>
@@ -151,6 +177,11 @@
                             <arg>-parameters</arg>
                         </compilerArgs>
                         <annotationProcessorPaths>
+                            <path>
+                                <groupId>io.micronaut</groupId>
+                                <artifactId>micronaut-graal</artifactId>
+                                <version>${micronaut.version}</version>
+                            </path>
                             <path>
                                 <groupId>io.micronaut</groupId>
                                 <artifactId>micronaut-inject-java</artifactId>
@@ -174,6 +205,11 @@
                                     <arg>-parameters</arg>
                                 </compilerArgs>
                                 <annotationProcessorPaths>
+                                    <path>
+                                        <groupId>io.micronaut</groupId>
+                                        <artifactId>micronaut-graal</artifactId>
+                                        <version>${micronaut.version}</version>
+                                    </path>
                                     <path>
                                         <groupId>io.micronaut</groupId>
                                         <artifactId>micronaut-inject-java</artifactId>

@@ -3,3 +3,11 @@ micronaut:
         name: mongonaut
 mongodb:
     uri: mongodb://mongonaut:mongonaut1234@localhost:27017/mongonaut
+endpoints:
+  info:
+    enabled: true
+    sensitive: false
+  health:
+    sensitive: false
+    enabled: true
+    details-visible: ANONYMOUS
