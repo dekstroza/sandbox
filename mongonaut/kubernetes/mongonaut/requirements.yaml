@@ -1,0 +1,10 @@
+dependencies:
+  - name: mongodb
+    version: 5.16.0
+    repository: "@stable"
+  - name: grafana
+    version: 3.0.1
+    repository: "@stable"
+  - name: prometheus
+    version: 8.9.1
+    repository: "@stable"
