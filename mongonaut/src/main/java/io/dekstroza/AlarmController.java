@@ -2,6 +2,7 @@ package io.dekstroza;
 
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoCollection;
+import io.micrometer.core.annotation.Timed;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
@@ -17,12 +18,14 @@ public class AlarmController {
         this.mongoClient = mongoClient;
     }
 
+    @Timed(value = "getAllAlarms",percentiles = {0.5, 0.95, 0.99},histogram = true, description = "Read all alarms timer")
     @Get(value = "/alarms")
     public Flowable<Alarm> sayHelloWorld() {
         return Flowable.fromPublisher(getCollection().find());
 
     }
 
+    @Timed(value = "saveAlarm",percentiles = {0.5, 0.95, 0.99},histogram = true, description = "Save alarm timer")
     @Post("/alarms")
     public Single<Alarm> save(Integer id, String name, String severity) {
         Alarm alarm = new Alarm(id, name, severity);
