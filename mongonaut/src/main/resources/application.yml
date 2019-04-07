@@ -3,6 +3,9 @@ micronaut:
         name: mongonaut
     metrics:
       enabled: true
+      binders:
+        jvm:
+          enabled: false
 
 mongodb:
     uri: mongodb://mongonaut:mongonaut1234@localhost:27017/mongonaut
