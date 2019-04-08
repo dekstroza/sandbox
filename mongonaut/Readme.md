@@ -15,8 +15,17 @@ Compiles to native image.
 
 Following assumes using k8s on Docker for Mac (k8s installed with docker itself). This makes exposing services through LoadBalancer easy, as they are exposed on localhost.
 By default ./mvnw clean install will also create docker image with Graal
-compiled binary inside, using provided Dockerfile. Build is performed with
-spotify's dockerfile maven plugin. To skip Graal build, run `/mvnw -Ddockerfile.skip clean install` which will build only the jar.
+compiled binary inside, using provided Dockerfile. 
+
+## Building
+
+Build is performed with spotify's dockerfile maven plugin. To skip Graal build, run `/mvnw -Ddockerfile.skip clean install` which will build only the jar.
+To build the code run, this will build the code and create docker image with
+Graal binary inside.
+
+```
+./mvnw clean install # or just mvn clean install
+```
 
 ## Trying out the service
 
