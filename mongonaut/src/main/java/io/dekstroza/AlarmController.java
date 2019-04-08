@@ -23,14 +23,14 @@ public class AlarmController {
         this.mongoClient = mongoClient;
     }
 
-    @Timed(percentiles = {0.5, 0.95},histogram = true, description = "Read all alarms timer")
+    @Timed(value = "method.alarms.getall",percentiles = {0.5, 0.95},histogram = true, description = "Read all alarms timer")
     @Get(value = "/alarms")
     public Flowable<Alarm> getAll() {
         return Flowable.fromPublisher(getCollection().find());
 
     }
 
-    @Timed(percentiles = {0.5, 0.95},histogram = true, description = "Save alarm timer")
+    @Timed(value = "method.alarms.save", percentiles = {0.5, 0.95},histogram = true, description = "Save alarm timer")
     @Post("/alarms")
     public Single<Alarm> save(Integer id, String name, String severity) {
         Alarm alarm = new Alarm(id, name, severity);
