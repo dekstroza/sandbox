@@ -1,14 +1,10 @@
 package io.dekstroza;
 
-import io.micronaut.configuration.metrics.annotation.RequiresMetrics;
+import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.runtime.Micronaut;
 
-import javax.inject.Singleton;
-
-@Singleton
-@RequiresMetrics
+@TypeHint(value={org.HdrHistogram.Histogram.class,org.HdrHistogram.ConcurrentHistogram.class})
 public class Application {
-
     public static void main(String[] args) {
         Micronaut.run(Application.class);
     }

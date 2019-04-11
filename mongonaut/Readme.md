@@ -86,5 +86,7 @@ Command to test the latency (get all alarms, or similar for save alarm url):
 curl -w "@curl-format.txt" -o /dev/null -s "http://localhost:7777/mongonaut/alarms"
 # For save alarm
 curl -w "@curl-format.txt" -o /dev/null -s -X POST localhost:7777/mongonaut/alarms -d '{"id": 1,"name": "Second Alarm", "severity": "MEDIUM"}' -H 'Content-Type:application/json'
+# Save several alarms
+for i in {10..20}; do curl -X POST localhost:7777/mongonaut/alarms -d "{\"id\": $i,\"name\": \"Second Alarm\", \"severity\": \"MEDIUM\"}" -H 'Content-Type:application/json'; done
 ```
 
