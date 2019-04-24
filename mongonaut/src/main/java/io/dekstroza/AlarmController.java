@@ -1,8 +1,8 @@
 package io.dekstroza;
 
-import com.mongodb.reactivestreams.client.MongoClient;
-import com.mongodb.reactivestreams.client.MongoCollection;
 import io.micrometer.core.annotation.Timed;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
@@ -11,33 +11,46 @@ import io.reactivex.Single;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Singleton
 @Controller("/mongonaut")
 public class AlarmController {
 
-    private final MongoClient mongoClient;
+    private final AlarmService alarmService;
 
     @Inject
-    public AlarmController(MongoClient mongoClient) {
-        this.mongoClient = mongoClient;
+    public AlarmController(final AlarmService alarmService) {
+        this.alarmService = alarmService;
     }
 
-    @Timed(value = "method.alarms.getall", percentiles = { 0.5, 0.95 }, histogram = false, description = "Read all alarms timer")
-    @Get(value = "/alarms")
+    /**
+     * Get all alarms from database
+     *
+     * @return Returns json array of all alarms in the database
+     */
+    @Timed(value = "method.alarms.api.getall", percentiles = { 0.5, 0.95, 0.99 }, histogram = true, description = "Read all alarms api metric")
+    @Get(value = "/alarms", produces = MediaType.APPLICATION_JSON)
     public Flowable<Alarm> getAll() {
-        return Flowable.fromPublisher(getCollection().find());
+        return alarmService.getAll();
     }
 
-    @Timed(value = "method.alarms.save", percentiles = { 0.5, 0.95 }, histogram = false, description = "Save alarm timer")
-    @Post("/alarms")
-    public Single<Alarm> save(Integer id, String name, String severity) {
-        Alarm alarm = new Alarm(id, name, severity);
-        return Single.fromPublisher(getCollection().insertOne(alarm)).map(success -> alarm);
-    }
-
-    private MongoCollection<Alarm> getCollection() {
-        return mongoClient.getDatabase("mongonaut").getCollection("alarms", Alarm.class);
+    /**
+     * Save single alarm into the database
+     *
+     * @param id
+     *            Unique identifier of the alarm
+     * @param name
+     *            Alarm name
+     * @param severity
+     *            Alarm severity
+     * @return Persisted alarm as json object
+     */
+    @Timed(value = "method.alarms.api.save", percentiles = { 0.5, 0.95, 0.99 }, histogram = true, description = "Insert alarm api metric")
+    @Post(value = "/alarms", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
+    public Single<HttpResponse<Alarm>> save(@NotNull Integer id, @NotBlank String name, @NotBlank String severity) {
+        return alarmService.save(id, name, severity).map(HttpResponse::created);
     }
 
 }

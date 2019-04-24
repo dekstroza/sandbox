@@ -1,5 +1,7 @@
 FROM oracle/graalvm-ce:1.0.0-rc15 as graalvm
-ADD /build/libs/mongonaut-1.0.0-SNAPSHOT.jar /home/app/mongonaut.jar
+ARG JAR_FILE
+ARG BUILD_DIR
+ADD ${BUILD_DIR}/${JAR_FILE} /home/app/mongonaut.jar
 WORKDIR /home/app
 RUN native-image --no-server \
     --delay-class-initialization-to-runtime=io.micronaut.configuration.mongo.reactive.test.AbstractMongoProcessFactory,com.mongodb.UnixServerAddress,com.mongodb.internal.connection.SnappyCompressor \

@@ -6,6 +6,11 @@ micronaut:
       binders:
         jvm:
           enabled: false
+    router:
+      static-resources:
+        swagger:
+          paths: classpath:META-INF/swagger
+          mapping: /swagger/**
 mongodb:
     uri: mongodb://mongonaut:mongonaut1234@localhost:27017/mongonaut
 endpoints:

@@ -3,11 +3,10 @@ tasks.withType(JavaCompile) {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 }
-
 group = 'io.dekstroza'
 version = '1.0.0-SNAPSHOT'
 
-description = "Mongonaut application"
+description = "Mongonaut Service"
 
 
 apply plugin: 'java'
@@ -24,6 +23,7 @@ import com.bmuschko.gradle.docker.tasks.image.*
 task dockerImg(type: DockerBuildImage) {
     inputDir = projectDir
     tags.add('dekstroza/mongonaut:1.0.0-SNAPSHOT')
+    buildArgs = ['BUILD_DIR': 'build/libs','JAR_FILE': project.name+'-'+project.version+'.jar']
     dependsOn build
 }
 shadowJar {
@@ -46,6 +46,7 @@ dependencies {
     annotationProcessor "io.micronaut:micronaut-validation"
     annotationProcessor "io.micronaut.configuration:micronaut-openapi"
     annotationProcessor "io.micronaut:micronaut-graal"
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
 
     compile group: 'io.micronaut', name: 'micronaut-http-client'
     compile group: 'io.micronaut', name: 'micronaut-http-server-netty'
@@ -56,13 +57,14 @@ dependencies {
     compile group: 'io.micronaut.configuration', name: 'micronaut-micrometer-core'
     compile group: 'io.micronaut', name: 'micronaut-management'
     compile group: 'io.micronaut.configuration', name: 'micronaut-micrometer-registry-prometheus'
-    compile group: 'javax.annotation', name: 'javax.annotation-api', version:'1.3.2'
+    compile group: 'io.swagger.core.v3', name: 'swagger-annotations'
     runtime group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
     runtime group: 'io.micronaut', name: 'micronaut-graal'
-    testCompile group: 'junit', name: 'junit', version:'4.12'
-    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version:'1.3'
-    compileOnly group: 'com.oracle.substratevm', name: 'svm', version:'1.0.0-rc13'
     compileOnly group: 'io.micronaut', name: 'micronaut-inject-java'
+    testCompile "org.junit.jupiter:junit-jupiter-api"
+    testCompile "io.micronaut.test:micronaut-test-junit5"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+
 }
 buildscript {
     repositories {
@@ -76,6 +78,10 @@ buildscript {
         classpath 'net.ltgt.gradle:gradle-apt-plugin:0.15'
         classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
     }
+}
+
+test {
+    useJUnitPlatform()
 }
 
 run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')

@@ -1,6 +1,7 @@
 package io.dekstroza;
 
 import io.micronaut.core.annotation.Introspected;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -8,8 +9,9 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.Objects;
 
-@Introspected
+@Schema(name = "Alarm", description = "Alarm representation")
 @BsonDiscriminator
+@Introspected
 public class Alarm {
 
     private final Integer id;
