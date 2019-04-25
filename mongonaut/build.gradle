@@ -58,6 +58,8 @@ dependencies {
     compile group: 'io.micronaut', name: 'micronaut-management'
     compile group: 'io.micronaut.configuration', name: 'micronaut-micrometer-registry-prometheus'
     compile group: 'io.swagger.core.v3', name: 'swagger-annotations'
+    compile group: 'io.micronaut', name: 'micronaut-tracing'
+    compile group: 'io.jaegertracing', name: 'jaeger-thrift'
     runtime group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
     runtime group: 'io.micronaut', name: 'micronaut-graal'
     compileOnly group: 'io.micronaut', name: 'micronaut-inject-java'

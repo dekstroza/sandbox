@@ -11,6 +11,14 @@ micronaut:
         swagger:
           paths: classpath:META-INF/swagger
           mapping: /swagger/**
+tracing:
+  jaeger:
+    enabled: true
+    sampler:
+      probability: 1
+    reporter:
+      flushInterval: 2000
+      maxQueueSize: 200
 mongodb:
     uri: mongodb://mongonaut:mongonaut1234@localhost:27017/mongonaut
 endpoints:

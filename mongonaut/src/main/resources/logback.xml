@@ -6,6 +6,7 @@
         </encoder>
     </appender>
 
+    <logger name="io.jaegertracing" level="DEBUG"/>
     <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>

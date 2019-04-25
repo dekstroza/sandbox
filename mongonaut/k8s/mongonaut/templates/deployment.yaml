@@ -26,6 +26,10 @@ spec:
           env:
             - name: MONGODB_URI
               value: mongodb://{{ .Values.mongodb.mongodbUsername }}:{{ .Values.mongodb.mongodbPassword }}@{{ .Release.Name }}-mongodb:27017/{{ .Values.mongodb.mongodbDatabase }}
+            - name: JAEGER_AGENT_HOST
+              value: {{ .Values.jaeger.agent.host }}
+            - name: JAEGER_AGENT_PORT
+              value: "{{ .Values.jaeger.agent.port }}"
           ports:
             - name: http
               containerPort: 8080

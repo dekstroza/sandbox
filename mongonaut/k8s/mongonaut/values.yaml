@@ -46,7 +46,10 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
+jaeger:
+  agent:
+    host: jaeger-agent
+    port: 5775
 mongodb:
   mongodbRootPassword: mongonaut1234
   mongodbUsername: mongonaut

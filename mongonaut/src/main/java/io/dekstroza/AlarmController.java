@@ -6,6 +6,8 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.tracing.annotation.NewSpan;
+import io.micronaut.tracing.annotation.SpanTag;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -49,7 +51,8 @@ public class AlarmController {
      */
     @Timed(value = "method.alarms.api.save", percentiles = { 0.5, 0.95, 0.99 }, histogram = true, description = "Insert alarm api metric")
     @Post(value = "/alarms", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-    public Single<HttpResponse<Alarm>> save(@NotNull Integer id, @NotBlank String name, @NotBlank String severity) {
+    @NewSpan("mongonaut-service")
+    public Single<HttpResponse<Alarm>> save(@SpanTag("alarms.save") @NotNull Integer id, @NotBlank String name, @NotBlank String severity) {
         return alarmService.save(id, name, severity).map(HttpResponse::created);
     }
 
