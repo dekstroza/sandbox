@@ -11,7 +11,6 @@ import java.util.Objects;
 
 @Schema(name = "Alarm", description = "Alarm representation")
 @BsonDiscriminator
-@Introspected
 public class Alarm {
 
     private final Integer id;

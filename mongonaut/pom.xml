@@ -102,6 +102,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>io.jaegertracing</groupId>
+            <artifactId>jaeger-micrometer</artifactId>
+            <version>0.34.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-inject-java</artifactId>
             <scope>provided</scope>
