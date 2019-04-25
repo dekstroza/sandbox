@@ -48,8 +48,11 @@ tolerations: []
 affinity: {}
 jaeger:
   agent:
-    host: jaeger-agent
+    host: localhost
     port: 5775
+  collector:
+    host: jaeger-collector
+    port: 14267
 mongodb:
   mongodbRootPassword: mongonaut1234
   mongodbUsername: mongonaut
