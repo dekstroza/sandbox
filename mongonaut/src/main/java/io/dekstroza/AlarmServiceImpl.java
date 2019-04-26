@@ -20,13 +20,13 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    @Timed(value = "method.alarms.service.getall", percentiles = { 0.5, 0.95 }, histogram = false, description = "Read all alarms timer")
+    @Timed(value = "method.alarms.service.getall", percentiles = { 0.5, 0.95, 0.99 }, histogram = true, description = "Read all service call metric")
     public Flowable<Alarm> getAll() {
         return Flowable.fromPublisher(getCollection().find());
     }
 
     @Override
-    @Timed(value = "method.alarms.service.save", percentiles = { 0.5, 0.95 }, histogram = false, description = "Save alarm timer")
+    @Timed(value = "method.alarms.service.save", percentiles = { 0.5, 0.95, 0.99 }, histogram = true, description = "Save alarm service call metric")
     public Single<Alarm> save(Integer id, String name, String severity) {
         Alarm alarm = new Alarm(id, name, severity);
         return Single.fromPublisher(getCollection().insertOne(alarm)).map(success -> alarm);

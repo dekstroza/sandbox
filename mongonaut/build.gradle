@@ -62,6 +62,7 @@ dependencies {
     compile group: 'io.jaegertracing', name: 'jaeger-thrift'
     runtime group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
     runtime group: 'io.micronaut', name: 'micronaut-graal'
+    runtime group: 'com.oracle.substratevm', name: 'svm', version: '1.0.0-rc16'
     compileOnly group: 'io.micronaut', name: 'micronaut-inject-java'
     testCompile "org.junit.jupiter:junit-jupiter-api"
     testCompile "io.micronaut.test:micronaut-test-junit5"
