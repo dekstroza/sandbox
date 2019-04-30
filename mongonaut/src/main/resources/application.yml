@@ -11,6 +11,16 @@ micronaut:
         swagger:
           paths: classpath:META-INF/swagger
           mapping: /swagger/**
+      versioning:
+        enabled: true
+        default-version: 1
+        header:
+          enabled: true
+          names:
+            - 'X-API-VERSION'
+            - 'Accept-Version'
+jackson:
+  bean-introspection-module: true
 tracing:
   jaeger:
     enabled: true

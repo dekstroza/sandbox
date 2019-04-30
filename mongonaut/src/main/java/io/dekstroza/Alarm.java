@@ -4,7 +4,6 @@ import io.micronaut.core.annotation.Introspected;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
-import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.Objects;
@@ -19,7 +18,7 @@ public class Alarm {
     private final String severity;
 
     @BsonCreator
-    public Alarm(@BsonProperty("Id") Integer id, @BsonProperty("name") String name, @BsonProperty("severity") String severity) {
+    public Alarm(@BsonProperty("id") Integer id, @BsonProperty("name") String name, @BsonProperty("severity") String severity) {
         this.id = id;
         this.name = name;
         this.severity = severity;
@@ -50,5 +49,16 @@ public class Alarm {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getSeverity());
+
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Alarm{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", severity='").append(severity).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }
