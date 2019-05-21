@@ -10,7 +10,7 @@ public interface AlarmService {
 
     Single<Alarm> save(Alarm alarm);
 
-    Maybe<Alarm> findById(Integer id);
+    Flowable<Alarm> findById(Integer id);
 
     Flowable<Alarm> findAlarmsBySeverity(String severity);
 }

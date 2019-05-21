@@ -36,8 +36,8 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     @Timed(value = "method.alarms.service.findById", percentiles = { 0.5, 0.95, 0.99 }, description = "Find alarm by id service call metric")
-    public Maybe<Alarm> findById(Integer id) {
-        return Flowable.fromPublisher(getCollection().find(eq("_id", id), Alarm.class).first()).singleElement();
+    public Flowable<Alarm> findById(Integer id) {
+        return Flowable.fromPublisher(getCollection().find(eq("_id", id), Alarm.class));
     }
 
     @Override
