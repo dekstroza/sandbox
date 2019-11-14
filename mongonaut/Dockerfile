@@ -1,4 +1,4 @@
-FROM oracle/graalvm-ce:19.0.0 as graalvm
+FROM oracle/graalvm-ce as graalvm
 ARG JAR_FILE
 ARG BUILD_DIR
 ADD ${BUILD_DIR}/${JAR_FILE} /home/app/mongonaut.jar
